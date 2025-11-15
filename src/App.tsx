@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, MagnifyingGlass, FunnelSimple, X } from '@phosphor-icons/react'
+import { Plus, MagnifyingGlass, FunnelSimple, X, Sparkle } from '@phosphor-icons/react'
 import { DashboardCard } from '@/components/DashboardCard'
 import { DashboardDialog } from '@/components/DashboardDialog'
+import { SuggestionsDialog } from '@/components/SuggestionsDialog'
 import { EmptyState } from '@/components/EmptyState'
 import { Toaster, toast } from 'sonner'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
@@ -14,6 +15,7 @@ import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 function App() {
   const [dashboards, setDashboards] = useKV<Dashboard[]>('dashboards', [])
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterPriority, setFilterPriority] = useState<Priority | 'all'>('all')
@@ -104,6 +106,25 @@ function App() {
     setFilterCategory('all')
   }
 
+  const handleAddFromSuggestion = (suggestion: Omit<Dashboard, 'id' | 'createdAt' | 'status'> & { status?: Status }) => {
+    const currentDashboards = dashboards || []
+    if (currentDashboards.length >= 20) {
+      toast.error('Maximum limit reached', {
+        description: 'You can only have up to 20 dashboards.',
+      })
+      return
+    }
+
+    const newDashboard: Dashboard = {
+      ...suggestion,
+      status: suggestion.status || 'not-started',
+      id: Date.now().toString(),
+      createdAt: Date.now(),
+    }
+    setDashboards((current) => [...(current || []), newDashboard])
+    toast.success('Dashboard added from suggestions')
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Toaster position="top-center" />
@@ -118,10 +139,20 @@ function App() {
                 Track and organize your top {(dashboards || []).length}/20 needed dashboards
               </p>
             </div>
-            <Button onClick={handleAddClick} disabled={(dashboards || []).length >= 20}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Dashboard
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                onClick={() => setSuggestionsOpen(true)} 
+                variant="outline"
+                className="gap-2"
+              >
+                <Sparkle className="h-4 w-4" weight="fill" />
+                Get Ideas
+              </Button>
+              <Button onClick={handleAddClick} disabled={(dashboards || []).length >= 20}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Dashboard
+              </Button>
+            </div>
           </div>
 
           <div className="flex flex-col gap-4">
@@ -218,6 +249,13 @@ function App() {
         onOpenChange={setDialogOpen}
         onSave={handleSave}
         editingDashboard={editingDashboard}
+      />
+
+      <SuggestionsDialog
+        open={suggestionsOpen}
+        onOpenChange={setSuggestionsOpen}
+        onAddSuggestion={handleAddFromSuggestion}
+        existingDashboards={dashboards || []}
       />
     </div>
   )
