@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, MagnifyingGlass, FunnelSimple, X, Sparkle } from '@phosphor-icons/react'
+import { Plus, MagnifyingGlass, FunnelSimple, X, Sparkle, Export, Upload } from '@phosphor-icons/react'
 import { DashboardCard } from '@/components/DashboardCard'
 import { DashboardDialog } from '@/components/DashboardDialog'
 import { SuggestionsDialog } from '@/components/SuggestionsDialog'
+import { ExportDialog } from '@/components/ExportDialog'
+import { ImportDialog } from '@/components/ImportDialog'
 import { EmptyState } from '@/components/EmptyState'
 import { Toaster, toast } from 'sonner'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
@@ -16,6 +18,8 @@ function App() {
   const [dashboards, setDashboards] = useKV<Dashboard[]>('dashboards', [])
   const [dialogOpen, setDialogOpen] = useState(false)
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
+  const [exportOpen, setExportOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterPriority, setFilterPriority] = useState<Priority | 'all'>('all')
@@ -125,6 +129,15 @@ function App() {
     toast.success('Dashboard added from suggestions')
   }
 
+  const handleImport = (importedDashboards: Dashboard[]) => {
+    const currentDashboards = dashboards || []
+    const availableSlots = 20 - currentDashboards.length
+    const toImport = importedDashboards.slice(0, availableSlots)
+    
+    setDashboards((current) => [...(current || []), ...toImport])
+    toast.success(`Imported ${toImport.length} dashboard${toImport.length === 1 ? '' : 's'}`)
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Toaster position="top-center" />
@@ -147,6 +160,23 @@ function App() {
               >
                 <Sparkle className="h-4 w-4" weight="fill" />
                 Get Ideas
+              </Button>
+              <Button 
+                onClick={() => setImportOpen(true)} 
+                variant="outline"
+                className="gap-2"
+              >
+                <Upload className="h-4 w-4" />
+                Import
+              </Button>
+              <Button 
+                onClick={() => setExportOpen(true)} 
+                variant="outline"
+                className="gap-2"
+                disabled={(dashboards || []).length === 0}
+              >
+                <Export className="h-4 w-4" />
+                Export
               </Button>
               <Button onClick={handleAddClick} disabled={(dashboards || []).length >= 20}>
                 <Plus className="mr-2 h-4 w-4" />
@@ -256,6 +286,20 @@ function App() {
         onOpenChange={setSuggestionsOpen}
         onAddSuggestion={handleAddFromSuggestion}
         existingDashboards={dashboards || []}
+      />
+
+      <ExportDialog
+        open={exportOpen}
+        onOpenChange={setExportOpen}
+        dashboards={dashboards || []}
+      />
+
+      <ImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        onImport={handleImport}
+        currentCount={(dashboards || []).length}
+        maxCount={20}
       />
     </div>
   )

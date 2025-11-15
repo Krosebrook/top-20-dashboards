@@ -47,12 +47,21 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Progression**: User applies filter → List updates instantly → Relevant dashboards shown → Clear filters to reset
 - **Success criteria**: Filter combinations work together, search is instant
 
+### Export & Import
+- **Functionality**: Export all dashboards to JSON or CSV format; import dashboards from previously exported files
+- **Purpose**: Enable data portability, backups, sharing between systems, and bulk data entry
+- **Trigger**: Click "Export" button to download data; click "Import" button to upload file
+- **Progression**: Export: User clicks export → Selects format (JSON/CSV) → File downloads. Import: User clicks import → Drags/selects file → Preview shown → Confirms import → Dashboards added
+- **Success criteria**: Exported files contain complete dashboard data, imported data validates correctly, respects 20-item limit
+
 ## Edge Case Handling
 - **Empty state**: Show welcoming empty state with "Add your first dashboard" CTA when no dashboards exist
-- **Maximum limit**: Warn user when approaching 20 dashboard limit, prevent adding beyond 20
+- **Maximum limit**: Warn user when approaching 20 dashboard limit, prevent adding beyond 20, import dialog shows available slots
 - **Duplicate names**: Allow duplicates but show warning to user
 - **Long content**: Truncate long descriptions with "read more" expansion
 - **No search results**: Display friendly "no results found" message with suggestion to clear filters
+- **Invalid import data**: Validate imported data, show preview with warnings, auto-correct invalid values to defaults
+- **Import over limit**: Prevent imports that would exceed 20 dashboards, show clear error message with current count
 
 ## Design Direction
 The design should feel professional and organized like a productivity tool, with a clean, modern aesthetic inspired by project management interfaces. A minimal interface with purposeful use of color to indicate status and priority serves the organizational purpose best.
@@ -116,6 +125,11 @@ Animations should be subtle and purposeful, reinforcing interactions without slo
   - Circle/CheckCircle (status indicators)
   - Star/StarFilled (priority/favorites)
   - ChartBar (dashboard icon)
+  - Export (download/export data)
+  - Upload (import data)
+  - File (file format indicators)
+  - DownloadSimple (download actions)
+  - Warning (validation alerts)
   
 - **Spacing**: 
   - Container padding: p-6 on desktop, p-4 on mobile
