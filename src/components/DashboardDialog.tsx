@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { CategorySelect } from '@/components/CategorySelect'
+import { PrioritySelect } from '@/components/PrioritySelect'
+import { StatusSelect } from '@/components/StatusSelect'
 import { useState, useEffect } from 'react'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 
@@ -47,8 +49,6 @@ export function DashboardDialog({ open, onOpenChange, onSave, editingDashboard }
       priority,
       status,
     })
-    
-    onOpenChange(false)
   }
 
   return (
@@ -82,53 +82,30 @@ export function DashboardDialog({ open, onOpenChange, onSave, editingDashboard }
 
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
-            <Select value={category} onValueChange={(value) => setCategory(value as Category)}>
-              <SelectTrigger id="category">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="analytics">Analytics</SelectItem>
-                <SelectItem value="sales">Sales</SelectItem>
-                <SelectItem value="marketing">Marketing</SelectItem>
-                <SelectItem value="operations">Operations</SelectItem>
-                <SelectItem value="finance">Finance</SelectItem>
-                <SelectItem value="hr">HR</SelectItem>
-                <SelectItem value="product">Product</SelectItem>
-                <SelectItem value="customer">Customer</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
+            <CategorySelect 
+              id="category"
+              value={category} 
+              onChange={setCategory}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="priority">Priority</Label>
-              <Select value={priority} onValueChange={(value) => setPriority(value as Priority)}>
-                <SelectTrigger id="priority">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="critical">Critical</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="low">Low</SelectItem>
-                </SelectContent>
-              </Select>
+              <PrioritySelect
+                id="priority"
+                value={priority}
+                onChange={setPriority}
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
-              <Select value={status} onValueChange={(value) => setStatus(value as Status)}>
-                <SelectTrigger id="status">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="not-started">Not Started</SelectItem>
-                  <SelectItem value="in-progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="on-hold">On Hold</SelectItem>
-                </SelectContent>
-              </Select>
+              <StatusSelect
+                id="status"
+                value={status}
+                onChange={setStatus}
+              />
             </div>
           </div>
         </div>

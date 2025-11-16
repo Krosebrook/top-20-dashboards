@@ -1,16 +1,26 @@
 import type { Dashboard } from './types'
+import { VALID_CATEGORIES, VALID_PRIORITIES, VALID_STATUSES } from './constants'
+import { generateDashboardId } from './dashboard-utils'
 
-export function exportToJSON(dashboards: Dashboard[]): void {
-  const dataStr = JSON.stringify(dashboards, null, 2)
-  const dataBlob = new Blob([dataStr], { type: 'application/json' })
-  const url = URL.createObjectURL(dataBlob)
+function downloadFile(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `dashboards-${new Date().toISOString().split('T')[0]}.json`
+  link.download = filename
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
+}
+
+function getDateString(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
+export function exportToJSON(dashboards: Dashboard[]): void {
+  const dataStr = JSON.stringify(dashboards, null, 2)
+  const dataBlob = new Blob([dataStr], { type: 'application/json' })
+  downloadFile(dataBlob, `dashboards-${getDateString()}.json`)
 }
 
 export function exportToCSV(dashboards: Dashboard[]): void {
@@ -30,14 +40,7 @@ export function exportToCSV(dashboards: Dashboard[]): void {
   ].join('\n')
 
   const dataBlob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-  const url = URL.createObjectURL(dataBlob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `dashboards-${new Date().toISOString().split('T')[0]}.csv`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  downloadFile(dataBlob, `dashboards-${getDateString()}.csv`)
 }
 
 export function parseCSV(content: string): Partial<Dashboard>[] {
@@ -93,19 +96,15 @@ export function parseCSV(content: string): Partial<Dashboard>[] {
 }
 
 export function validateImportedDashboards(dashboards: Partial<Dashboard>[]): Dashboard[] {
-  const validCategories = ['analytics', 'sales', 'marketing', 'operations', 'finance', 'hr', 'product', 'customer', 'other']
-  const validPriorities = ['critical', 'high', 'medium', 'low']
-  const validStatuses = ['not-started', 'in-progress', 'completed', 'on-hold']
-
   return dashboards
     .filter(d => d.title && d.title.trim().length > 0)
     .map(d => ({
-      id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+      id: generateDashboardId(),
       title: d.title || 'Untitled Dashboard',
       description: d.description || '',
-      category: validCategories.includes(d.category || '') ? d.category as Dashboard['category'] : 'other',
-      priority: validPriorities.includes(d.priority || '') ? d.priority as Dashboard['priority'] : 'medium',
-      status: validStatuses.includes(d.status || '') ? d.status as Dashboard['status'] : 'not-started',
+      category: VALID_CATEGORIES.includes(d.category as any) ? d.category as Dashboard['category'] : 'other',
+      priority: VALID_PRIORITIES.includes(d.priority as any) ? d.priority as Dashboard['priority'] : 'medium',
+      status: VALID_STATUSES.includes(d.status as any) ? d.status as Dashboard['status'] : 'not-started',
       createdAt: d.createdAt || Date.now()
     }))
 }

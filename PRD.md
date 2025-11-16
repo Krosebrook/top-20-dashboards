@@ -2,6 +2,15 @@
 
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
+**Recent Refactoring (Current State):**
+The codebase has been refactored to improve maintainability, code organization, and reusability following best practices:
+- Extracted business logic into custom hooks (`useDashboardManager`, `useDashboardFilters`)
+- Created centralized constants file for configuration values
+- Built reusable UI components (CategorySelect, PrioritySelect, StatusSelect, DashboardToolbar, DashboardFilters)
+- Separated utility functions into dedicated modules
+- Simplified App.tsx by delegating responsibilities to specialized components and hooks
+- Improved type safety and reduced code duplication throughout
+
 **Experience Qualities**: 
 1. **Organized** - Information is clearly structured with intuitive categorization and visual hierarchy
 2. **Actionable** - Users can quickly identify priority dashboards and take next steps
