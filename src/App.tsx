@@ -87,11 +87,12 @@ function App() {
   const remainingSlots = MAX_DASHBOARDS - dashboards.length
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <Toaster position="top-center" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      
+      <div className="flex-shrink-0 border-b border-border bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">
                 Dashboard Manager
@@ -126,25 +127,29 @@ function App() {
             totalCount={dashboards.length}
           />
         </div>
+      </div>
 
-        {filteredDashboards.length === 0 ? (
-          <EmptyState 
-            onAddClick={handleAddClick} 
-            onTemplatesClick={() => setTemplatesOpen(true)}
-            isFiltered={hasActiveFilters} 
-          />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredDashboards.map((dashboard) => (
-              <DashboardCard
-                key={dashboard.id}
-                dashboard={dashboard}
-                onEdit={handleEditClick}
-                onDelete={deleteDashboard}
-              />
-            ))}
-          </div>
-        )}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+          {filteredDashboards.length === 0 ? (
+            <EmptyState 
+              onAddClick={handleAddClick} 
+              onTemplatesClick={() => setTemplatesOpen(true)}
+              isFiltered={hasActiveFilters} 
+            />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-6">
+              {filteredDashboards.map((dashboard) => (
+                <DashboardCard
+                  key={dashboard.id}
+                  dashboard={dashboard}
+                  onEdit={handleEditClick}
+                  onDelete={deleteDashboard}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <DashboardDialog
