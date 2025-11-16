@@ -91,101 +91,40 @@ export function TemplatesDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[90vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Sparkle className="h-5 w-5" weight="fill" />
-            Dashboard Templates
-          </DialogTitle>
-          <DialogDescription>
-            Choose from {DASHBOARD_TEMPLATES.length} pre-built dashboard templates across {TEMPLATE_CATEGORIES.length} categories
-            {availableSlots > 0 && (
-              <span className="ml-2 text-primary font-medium">
-                ({availableSlots} {availableSlots === 1 ? 'slot' : 'slots'} available)
-              </span>
-            )}
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-5xl max-h-[90vh] p-0 gap-0 flex flex-col">
+        <div className="px-6 pt-6 pb-4 shrink-0">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Sparkle className="h-5 w-5" weight="fill" />
+              Dashboard Templates
+            </DialogTitle>
+            <DialogDescription>
+              Choose from {DASHBOARD_TEMPLATES.length} pre-built dashboard templates across {TEMPLATE_CATEGORIES.length} categories
+              {availableSlots > 0 && (
+                <span className="ml-2 text-primary font-medium">
+                  ({availableSlots} {availableSlots === 1 ? 'slot' : 'slots'} available)
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="relative mb-4">
-          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search templates..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
+          <div className="relative mt-4">
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search templates..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
         </div>
 
-        {searchQuery ? (
-          <div className="flex-1 overflow-y-auto">
-            <div className="space-y-3 pr-2">
-              {filteredTemplates.length > 0 ? (
-                filteredTemplates.map((template, index) => (
-                  <div
-                    key={index}
-                    className="border rounded-lg p-4 hover:border-primary/50 transition-colors"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-foreground mb-1">
-                          {template.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground mb-3">
-                          {template.description}
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline" className={getPriorityColor(template.priority)}>
-                            {template.priority}
-                          </Badge>
-                          <Badge variant="outline" className={getCategoryColor(template.category)}>
-                            {template.category}
-                          </Badge>
-                        </div>
-                      </div>
-                      <Button
-                        size="sm"
-                        onClick={() => handleAddTemplate(template)}
-                        disabled={availableSlots <= 0}
-                        className="shrink-0"
-                      >
-                        <Plus className="h-4 w-4 mr-1" />
-                        Add
-                      </Button>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-12 text-muted-foreground">
-                  No templates found for "{searchQuery}"
-                </div>
-              )}
-            </div>
-          </div>
-        ) : (
-          <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as TemplateCategory)}>
-            <TabsList className="w-full grid grid-cols-4 h-auto">
-              {TEMPLATE_CATEGORIES.map((cat) => (
-                <TabsTrigger
-                  key={cat.id}
-                  value={cat.id}
-                  className="flex flex-col items-center gap-1 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                >
-                  <span className="text-lg">{cat.icon}</span>
-                  <span className="hidden sm:inline">{cat.name}</span>
-                  <span className="sm:hidden">{cat.name.split(' ')[0]}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {TEMPLATE_CATEGORIES.map((cat) => (
-              <TabsContent key={cat.id} value={cat.id} className="flex-1 overflow-y-auto mt-4">
-                <div className="mb-4">
-                  <h3 className="font-semibold text-lg mb-1">{cat.name}</h3>
-                  <p className="text-sm text-muted-foreground">{cat.description}</p>
-                </div>
-                <div className="space-y-3 pr-2">
-                  {getTemplatesByCategory(cat.id).map((template, index) => (
+        <div className="flex-1 min-h-0 overflow-y-auto px-6">
+          {searchQuery ? (
+            <div className="pb-4">
+              <div className="space-y-3 pr-2">
+                {filteredTemplates.length > 0 ? (
+                  filteredTemplates.map((template, index) => (
                     <div
                       key={index}
                       className="border rounded-lg p-4 hover:border-primary/50 transition-colors"
@@ -218,16 +157,83 @@ export function TemplatesDialog({
                         </Button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        )}
+                  ))
+                ) : (
+                  <div className="text-center py-12 text-muted-foreground">
+                    No templates found for "{searchQuery}"
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as TemplateCategory)} className="flex flex-col h-full">
+              <TabsList className="w-full grid grid-cols-4 h-auto shrink-0">
+                {TEMPLATE_CATEGORIES.map((cat) => (
+                  <TabsTrigger
+                    key={cat.id}
+                    value={cat.id}
+                    className="flex flex-col items-center gap-1 py-2 text-xs data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  >
+                    <span className="text-lg">{cat.icon}</span>
+                    <span className="hidden sm:inline">{cat.name}</span>
+                    <span className="sm:hidden">{cat.name.split(' ')[0]}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+
+              {TEMPLATE_CATEGORIES.map((cat) => (
+                <TabsContent key={cat.id} value={cat.id} className="mt-4 pb-4">
+                  <div className="mb-4">
+                    <h3 className="font-semibold text-lg mb-1">{cat.name}</h3>
+                    <p className="text-sm text-muted-foreground">{cat.description}</p>
+                  </div>
+                  <div className="space-y-3 pr-2">
+                    {getTemplatesByCategory(cat.id).map((template, index) => (
+                      <div
+                        key={index}
+                        className="border rounded-lg p-4 hover:border-primary/50 transition-colors"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-foreground mb-1">
+                              {template.title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground mb-3">
+                              {template.description}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              <Badge variant="outline" className={getPriorityColor(template.priority)}>
+                                {template.priority}
+                              </Badge>
+                              <Badge variant="outline" className={getCategoryColor(template.category)}>
+                                {template.category}
+                              </Badge>
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            onClick={() => handleAddTemplate(template)}
+                            disabled={availableSlots <= 0}
+                            className="shrink-0"
+                          >
+                            <Plus className="h-4 w-4 mr-1" />
+                            Add
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
+          )}
+        </div>
 
         {availableSlots <= 0 && (
-          <div className="mt-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm text-center">
-            You've reached the maximum of 20 dashboards. Remove some dashboards to add more.
+          <div className="px-6 pb-6 shrink-0">
+            <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm text-center">
+              You've reached the maximum of 20 dashboards. Remove some dashboards to add more.
+            </div>
           </div>
         )}
       </DialogContent>
