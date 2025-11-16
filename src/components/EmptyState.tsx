@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button'
-import { ChartBar, Plus } from '@phosphor-icons/react'
+import { ChartBar, Plus, Sparkle } from '@phosphor-icons/react'
 
 interface EmptyStateProps {
   onAddClick: () => void
+  onTemplatesClick?: () => void
   isFiltered?: boolean
 }
 
-export function EmptyState({ onAddClick, isFiltered }: EmptyStateProps) {
+export function EmptyState({ onAddClick, onTemplatesClick, isFiltered }: EmptyStateProps) {
   if (isFiltered) {
     return (
       <div className="flex flex-col items-center justify-center py-20 px-4">
@@ -30,10 +31,18 @@ export function EmptyState({ onAddClick, isFiltered }: EmptyStateProps) {
       <p className="text-muted-foreground text-center max-w-sm mb-6">
         Get started by adding your first dashboard to track and organize the analytics you need.
       </p>
-      <Button onClick={onAddClick}>
-        <Plus className="mr-2 h-4 w-4" />
-        Add Your First Dashboard
-      </Button>
+      <div className="flex gap-2">
+        {onTemplatesClick && (
+          <Button onClick={onTemplatesClick} variant="outline">
+            <Sparkle className="mr-2 h-4 w-4" weight="fill" />
+            Browse Templates
+          </Button>
+        )}
+        <Button onClick={onAddClick}>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Your First Dashboard
+        </Button>
+      </div>
     </div>
   )
 }

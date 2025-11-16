@@ -10,9 +10,11 @@ import { DashboardDialog } from '@/components/DashboardDialog'
 import { SuggestionsDialog } from '@/components/SuggestionsDialog'
 import { ExportDialog } from '@/components/ExportDialog'
 import { ImportDialog } from '@/components/ImportDialog'
+import { TemplatesDialog } from '@/components/TemplatesDialog'
 import { EmptyState } from '@/components/EmptyState'
 import { Toaster, toast } from 'sonner'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
+import type { DashboardTemplate } from '@/lib/dashboard-templates'
 
 function App() {
   const [dashboards, setDashboards] = useKV<Dashboard[]>('dashboards', [])
@@ -20,6 +22,7 @@ function App() {
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
   const [exportOpen, setExportOpen] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
+  const [templatesOpen, setTemplatesOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [filterPriority, setFilterPriority] = useState<Priority | 'all'>('all')
@@ -138,6 +141,28 @@ function App() {
     toast.success(`Imported ${toImport.length} dashboard${toImport.length === 1 ? '' : 's'}`)
   }
 
+  const handleAddTemplate = (template: DashboardTemplate) => {
+    const currentDashboards = dashboards || []
+    if (currentDashboards.length >= 20) {
+      toast.error('Maximum limit reached', {
+        description: 'You can only have up to 20 dashboards.',
+      })
+      return
+    }
+
+    const newDashboard: Dashboard = {
+      id: Date.now().toString(),
+      title: template.title,
+      description: template.description,
+      category: template.category,
+      priority: template.priority,
+      status: 'not-started',
+      createdAt: Date.now(),
+    }
+    setDashboards((current) => [...(current || []), newDashboard])
+    toast.success('Template added successfully')
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Toaster position="top-center" />
@@ -152,14 +177,22 @@ function App() {
                 Track and organize your top {(dashboards || []).length}/20 needed dashboards
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                onClick={() => setTemplatesOpen(true)} 
+                variant="outline"
+                className="gap-2"
+              >
+                <Sparkle className="h-4 w-4" weight="fill" />
+                <span className="hidden sm:inline">Templates</span>
+              </Button>
               <Button 
                 onClick={() => setSuggestionsOpen(true)} 
                 variant="outline"
                 className="gap-2"
               >
-                <Sparkle className="h-4 w-4" weight="fill" />
-                Get Ideas
+                <Sparkle className="h-4 w-4" />
+                <span className="hidden sm:inline">AI Ideas</span>
               </Button>
               <Button 
                 onClick={() => setImportOpen(true)} 
@@ -167,7 +200,7 @@ function App() {
                 className="gap-2"
               >
                 <Upload className="h-4 w-4" />
-                Import
+                <span className="hidden sm:inline">Import</span>
               </Button>
               <Button 
                 onClick={() => setExportOpen(true)} 
@@ -176,11 +209,11 @@ function App() {
                 disabled={(dashboards || []).length === 0}
               >
                 <Export className="h-4 w-4" />
-                Export
+                <span className="hidden sm:inline">Export</span>
               </Button>
               <Button onClick={handleAddClick} disabled={(dashboards || []).length >= 20}>
                 <Plus className="mr-2 h-4 w-4" />
-                Add Dashboard
+                Add
               </Button>
             </div>
           </div>
@@ -259,7 +292,11 @@ function App() {
         </div>
 
         {filteredDashboards.length === 0 ? (
-          <EmptyState onAddClick={handleAddClick} isFiltered={hasActiveFilters} />
+          <EmptyState 
+            onAddClick={handleAddClick} 
+            onTemplatesClick={() => setTemplatesOpen(true)}
+            isFiltered={hasActiveFilters} 
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredDashboards.map((dashboard) => (
@@ -300,6 +337,13 @@ function App() {
         onImport={handleImport}
         currentCount={(dashboards || []).length}
         maxCount={20}
+      />
+
+      <TemplatesDialog
+        open={templatesOpen}
+        onOpenChange={setTemplatesOpen}
+        onAddTemplate={handleAddTemplate}
+        existingDashboards={dashboards || []}
       />
     </div>
   )
