@@ -8,16 +8,19 @@ interface ExportDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   dashboards: Dashboard[]
+  onExport?: () => void
 }
 
-export function ExportDialog({ open, onOpenChange, dashboards }: ExportDialogProps) {
+export function ExportDialog({ open, onOpenChange, dashboards, onExport }: ExportDialogProps) {
   const handleExportJSON = () => {
     exportToJSON(dashboards)
+    onExport?.()
     onOpenChange(false)
   }
 
   const handleExportCSV = () => {
     exportToCSV(dashboards)
+    onExport?.()
     onOpenChange(false)
   }
 

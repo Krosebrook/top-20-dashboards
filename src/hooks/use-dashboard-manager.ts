@@ -15,13 +15,13 @@ export function useDashboardManager() {
       toast.error('Maximum limit reached', {
         description: `You can only have up to ${MAX_DASHBOARDS} dashboards.`,
       })
-      return false
+      return null
     }
 
     const newDashboard = createDashboard(data)
     setDashboards((current) => [...(current || []), newDashboard])
     toast.success('Dashboard added successfully')
-    return true
+    return newDashboard
   }
 
   const updateExistingDashboard = (
@@ -46,20 +46,22 @@ export function useDashboardManager() {
       status?: Status
     }
   ) => {
-    return addDashboard({
+    const result = addDashboard({
       ...suggestion,
       status: suggestion.status || 'not-started',
     })
+    return result !== null
   }
 
   const addFromTemplate = (template: DashboardTemplate) => {
-    return addDashboard({
+    const result = addDashboard({
       title: template.title,
       description: template.description,
       category: template.category,
       priority: template.priority,
       status: 'not-started',
     })
+    return result !== null
   }
 
   const importDashboards = (importedDashboards: Dashboard[]) => {

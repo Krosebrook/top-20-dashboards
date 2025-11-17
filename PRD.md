@@ -2,14 +2,9 @@
 
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
-**Recent Refactoring (Current State):**
-The codebase has been refactored to improve maintainability, code organization, and reusability following best practices:
-- Extracted business logic into custom hooks (`useDashboardManager`, `useDashboardFilters`)
-- Created centralized constants file for configuration values
-- Built reusable UI components (CategorySelect, PrioritySelect, StatusSelect, DashboardToolbar, DashboardFilters)
-- Separated utility functions into dedicated modules
-- Simplified App.tsx by delegating responsibilities to specialized components and hooks
-- Improved type safety and reduced code duplication throughout
+**Recent Updates:**
+- **Analytics & Usage Tracking (Current)**: Added comprehensive analytics system to track dashboard interactions, usage patterns, and provide insights into user behavior
+- **Refactoring**: Extracted business logic into custom hooks (`useDashboardManager`, `useDashboardFilters`, `useAnalytics`), created reusable UI components, separated utility functions into dedicated modules, improved type safety throughout
 
 **Experience Qualities**: 
 1. **Organized** - Information is clearly structured with intuitive categorization and visual hierarchy
@@ -17,7 +12,7 @@ The codebase has been refactored to improve maintainability, code organization, 
 3. **Elegant** - Clean, modern interface that feels professional yet approachable
 
 **Complexity Level**: Light Application (multiple features with basic state)
-  - Multiple dashboard entries with CRUD operations, prioritization, filtering, and persistence across sessions
+  - Multiple dashboard entries with CRUD operations, prioritization, filtering, analytics tracking, and persistence across sessions
 
 ## Essential Features
 
@@ -63,6 +58,13 @@ The codebase has been refactored to improve maintainability, code organization, 
 - **Progression**: Export: User clicks export → Selects format (JSON/CSV) → File downloads. Import: User clicks import → Drags/selects file → Preview shown → Confirms import → Dashboards added
 - **Success criteria**: Exported files contain complete dashboard data, imported data validates correctly, respects 20-item limit
 
+### Analytics & Usage Tracking
+- **Functionality**: Comprehensive tracking of all dashboard interactions including views, edits, status changes, priority changes; visual analytics dashboard with charts and statistics; activity log showing recent events
+- **Purpose**: Provide insights into dashboard usage patterns, identify most/least active dashboards, track completion metrics, understand user behavior over time
+- **Trigger**: Click "Analytics" button in toolbar; tracking happens automatically on all interactions
+- **Progression**: User clicks analytics → Dialog opens with three tabs (Overview, Usage Details, Activity Log) → User views statistics, trends, top dashboards → Can clear analytics if needed
+- **Success criteria**: All interactions are tracked persistently, analytics provide actionable insights, visualizations are clear and meaningful, no performance impact on main app
+
 ## Edge Case Handling
 - **Empty state**: Show welcoming empty state with "Add your first dashboard" CTA when no dashboards exist
 - **Maximum limit**: Warn user when approaching 20 dashboard limit, prevent adding beyond 20, import dialog shows available slots
@@ -71,6 +73,8 @@ The codebase has been refactored to improve maintainability, code organization, 
 - **No search results**: Display friendly "no results found" message with suggestion to clear filters
 - **Invalid import data**: Validate imported data, show preview with warnings, auto-correct invalid values to defaults
 - **Import over limit**: Prevent imports that would exceed 20 dashboards, show clear error message with current count
+- **No analytics data**: Show empty state in analytics dialog when no events have been tracked yet
+- **Analytics data size**: Track indefinitely but provide clear analytics option to prevent storage bloat
 
 ## Design Direction
 The design should feel professional and organized like a productivity tool, with a clean, modern aesthetic inspired by project management interfaces. A minimal interface with purposeful use of color to indicate status and priority serves the organizational purpose best.
@@ -133,12 +137,17 @@ Animations should be subtle and purposeful, reinforcing interactions without slo
   - MagnifyingGlass (search)
   - Circle/CheckCircle (status indicators)
   - Star/StarFilled (priority/favorites)
-  - ChartBar (dashboard icon)
+  - ChartBar (dashboard icon, analytics)
   - Export (download/export data)
   - Upload (import data)
   - File (file format indicators)
   - DownloadSimple (download actions)
   - Warning (validation alerts)
+  - TrendUp (analytics trends)
+  - Activity (activity indicators)
+  - Eye (view tracking)
+  - Clock (time-based stats)
+  - Calendar (date information)
   
 - **Spacing**: 
   - Container padding: p-6 on desktop, p-4 on mobile

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DashboardCard } from '@/components/DashboardCard'
 import { DashboardDialog } from '@/components/DashboardDialog'
 import { DashboardFilters } from '@/components/DashboardFilters'
@@ -7,10 +7,12 @@ import { SuggestionsDialog } from '@/components/SuggestionsDialog'
 import { ExportDialog } from '@/components/ExportDialog'
 import { ImportDialog } from '@/components/ImportDialog'
 import { TemplatesDialog } from '@/components/TemplatesDialog'
+import { AnalyticsDialog } from '@/components/AnalyticsDialog'
 import { EmptyState } from '@/components/EmptyState'
 import { Toaster, toast } from 'sonner'
 import { useDashboardManager } from '@/hooks/use-dashboard-manager'
 import { useDashboardFilters } from '@/hooks/use-dashboard-filters'
+import { useAnalytics } from '@/hooks/use-analytics'
 import { MAX_DASHBOARDS } from '@/lib/constants'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 
@@ -25,6 +27,15 @@ function App() {
     addFromTemplate,
     importDashboards,
   } = useDashboardManager()
+
+  const {
+    events,
+    usageStats,
+    overallAnalytics,
+    trackEvent,
+    getDashboardStats,
+    clearAnalytics,
+  } = useAnalytics(dashboards)
 
   const {
     searchQuery,
@@ -45,7 +56,19 @@ function App() {
   const [exportOpen, setExportOpen] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
   const [templatesOpen, setTemplatesOpen] = useState(false)
+  const [analyticsOpen, setAnalyticsOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
+
+  useEffect(() => {
+    if (hasActiveFilters) {
+      trackEvent('filter_applied', undefined, {
+        searchQuery,
+        filterPriority,
+        filterStatus,
+        filterCategory,
+      })
+    }
+  }, [searchQuery, filterPriority, filterStatus, filterCategory])
 
   const handleAddClick = () => {
     if (!canAddDashboard) {
@@ -59,28 +82,74 @@ function App() {
   }
 
   const handleEditClick = (dashboard: Dashboard) => {
+    trackEvent('dashboard_viewed', dashboard.id)
     setEditingDashboard(dashboard)
     setDialogOpen(true)
   }
 
   const handleSave = (dashboardData: Omit<Dashboard, 'id' | 'createdAt'>) => {
     if (editingDashboard) {
+      const oldStatus = editingDashboard.status
+      const oldPriority = editingDashboard.priority
+      
       updateDashboard(editingDashboard.id, dashboardData)
+      trackEvent('dashboard_updated', editingDashboard.id, dashboardData)
+      
+      if (oldStatus !== dashboardData.status) {
+        trackEvent('status_changed', editingDashboard.id, {
+          oldStatus,
+          newStatus: dashboardData.status,
+        })
+      }
+      
+      if (oldPriority !== dashboardData.priority) {
+        trackEvent('priority_changed', editingDashboard.id, {
+          oldPriority,
+          newPriority: dashboardData.priority,
+        })
+      }
     } else {
-      addDashboard(dashboardData)
+      const newDashboard = addDashboard(dashboardData)
+      if (newDashboard) {
+        trackEvent('dashboard_created', undefined, dashboardData)
+      }
     }
     setDialogOpen(false)
   }
 
+  const handleDelete = (id: string) => {
+    deleteDashboard(id)
+    trackEvent('dashboard_deleted', id)
+  }
+
   const handleAddFromSuggestion = (suggestion: Omit<Dashboard, 'id' | 'createdAt' | 'status'> & { status?: Status }) => {
     if (addFromSuggestion(suggestion)) {
+      trackEvent('suggestion_accepted', undefined, suggestion)
       setSuggestionsOpen(false)
     }
   }
 
   const handleAddTemplate = (template: any) => {
     if (addFromTemplate(template)) {
+      trackEvent('template_used', undefined, { templateTitle: template.title })
       setTemplatesOpen(false)
+    }
+  }
+
+  const handleImport = (importedDashboards: Dashboard[]) => {
+    importDashboards(importedDashboards)
+    trackEvent('import_completed', undefined, { count: importedDashboards.length })
+  }
+
+  const handleExport = () => {
+    trackEvent('export_completed', undefined, { count: dashboards.length })
+  }
+
+  const handleClearAnalytics = () => {
+    if (confirm('Are you sure you want to clear all analytics data? This cannot be undone.')) {
+      clearAnalytics()
+      toast.success('Analytics data cleared')
+      setAnalyticsOpen(false)
     }
   }
 
@@ -107,6 +176,7 @@ function App() {
               onSuggestions={() => setSuggestionsOpen(true)}
               onImport={() => setImportOpen(true)}
               onExport={() => setExportOpen(true)}
+              onAnalytics={() => setAnalyticsOpen(true)}
               canAdd={canAddDashboard}
               canExport={dashboards.length > 0}
             />
@@ -144,7 +214,7 @@ function App() {
                   key={dashboard.id}
                   dashboard={dashboard}
                   onEdit={handleEditClick}
-                  onDelete={deleteDashboard}
+                  onDelete={handleDelete}
                 />
               ))}
             </div>
@@ -170,12 +240,13 @@ function App() {
         open={exportOpen}
         onOpenChange={setExportOpen}
         dashboards={dashboards}
+        onExport={handleExport}
       />
 
       <ImportDialog
         open={importOpen}
         onOpenChange={setImportOpen}
-        onImport={importDashboards}
+        onImport={handleImport}
         currentCount={dashboards.length}
         maxCount={MAX_DASHBOARDS}
       />
@@ -185,6 +256,16 @@ function App() {
         onOpenChange={setTemplatesOpen}
         onAddTemplate={handleAddTemplate}
         existingDashboards={dashboards}
+      />
+
+      <AnalyticsDialog
+        open={analyticsOpen}
+        onOpenChange={setAnalyticsOpen}
+        analytics={overallAnalytics}
+        usageStats={usageStats}
+        dashboards={dashboards}
+        events={events}
+        onClearAnalytics={handleClearAnalytics}
       />
     </div>
   )
