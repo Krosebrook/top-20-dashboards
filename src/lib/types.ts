@@ -26,6 +26,7 @@ export type AnalyticsEventType =
   | 'import_completed'
   | 'template_used'
   | 'suggestion_accepted'
+  | 'bulk_tags_applied'
 
 export interface AnalyticsEvent {
   id: string

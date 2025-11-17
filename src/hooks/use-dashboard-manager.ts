@@ -91,6 +91,36 @@ export function useDashboardManager() {
     )
   }
 
+  const applyBulkTags = (dashboardIds: string[], tagsToAdd: string[], tagsToRemove: string[]) => {
+    setDashboards((current) =>
+      (current || []).map((d) => {
+        if (!dashboardIds.includes(d.id)) return d
+
+        let updatedTags = [...d.tags]
+        
+        tagsToRemove.forEach(tag => {
+          updatedTags = updatedTags.filter(t => t !== tag)
+        })
+        
+        tagsToAdd.forEach(tag => {
+          if (!updatedTags.includes(tag)) {
+            updatedTags.push(tag)
+          }
+        })
+
+        return { ...d, tags: updatedTags }
+      })
+    )
+
+    const addMsg = tagsToAdd.length > 0 ? `Added ${tagsToAdd.length} tag${tagsToAdd.length === 1 ? '' : 's'}` : ''
+    const removeMsg = tagsToRemove.length > 0 ? `Removed ${tagsToRemove.length} tag${tagsToRemove.length === 1 ? '' : 's'}` : ''
+    const separator = addMsg && removeMsg ? ', ' : ''
+    
+    toast.success(`Bulk tag operation completed`, {
+      description: `${addMsg}${separator}${removeMsg} for ${dashboardIds.length} dashboard${dashboardIds.length === 1 ? '' : 's'}`
+    })
+  }
+
   return {
     dashboards: dashboards || [],
     canAddDashboard,
@@ -100,5 +130,6 @@ export function useDashboardManager() {
     addFromSuggestion,
     addFromTemplate,
     importDashboards,
+    applyBulkTags,
   }
 }

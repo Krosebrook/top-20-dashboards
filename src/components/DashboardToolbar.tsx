@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Plus, Sparkle, Export, Upload, ChartBar } from '@phosphor-icons/react'
+import { Plus, Sparkle, Export, Upload, ChartBar, Tag } from '@phosphor-icons/react'
 
 interface DashboardToolbarProps {
   onAdd: () => void
@@ -8,8 +8,10 @@ interface DashboardToolbarProps {
   onImport: () => void
   onExport: () => void
   onAnalytics: () => void
+  onBulkTags: () => void
   canAdd: boolean
   canExport: boolean
+  hasDashboards: boolean
 }
 
 export function DashboardToolbar({
@@ -19,8 +21,10 @@ export function DashboardToolbar({
   onImport,
   onExport,
   onAnalytics,
+  onBulkTags,
   canAdd,
   canExport,
+  hasDashboards,
 }: DashboardToolbarProps) {
   return (
     <div className="flex flex-wrap gap-2">
@@ -39,6 +43,15 @@ export function DashboardToolbar({
       >
         <Sparkle className="h-4 w-4" />
         <span className="hidden sm:inline">AI Ideas</span>
+      </Button>
+      <Button 
+        onClick={onBulkTags} 
+        variant="outline"
+        className="gap-2"
+        disabled={!hasDashboards}
+      >
+        <Tag className="h-4 w-4" />
+        <span className="hidden sm:inline">Bulk Tags</span>
       </Button>
       <Button 
         onClick={onImport} 

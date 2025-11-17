@@ -8,6 +8,7 @@ import { ExportDialog } from '@/components/ExportDialog'
 import { ImportDialog } from '@/components/ImportDialog'
 import { TemplatesDialog } from '@/components/TemplatesDialog'
 import { AnalyticsDialog } from '@/components/AnalyticsDialog'
+import { BulkTagDialog } from '@/components/BulkTagDialog'
 import { EmptyState } from '@/components/EmptyState'
 import { Toaster, toast } from 'sonner'
 import { useDashboardManager } from '@/hooks/use-dashboard-manager'
@@ -26,6 +27,7 @@ function App() {
     addFromSuggestion,
     addFromTemplate,
     importDashboards,
+    applyBulkTags,
   } = useDashboardManager()
 
   const {
@@ -65,6 +67,7 @@ function App() {
   const [importOpen, setImportOpen] = useState(false)
   const [templatesOpen, setTemplatesOpen] = useState(false)
   const [analyticsOpen, setAnalyticsOpen] = useState(false)
+  const [bulkTagOpen, setBulkTagOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
 
   useEffect(() => {
@@ -162,6 +165,15 @@ function App() {
     }
   }
 
+  const handleBulkTags = (dashboardIds: string[], tagsToAdd: string[], tagsToRemove: string[]) => {
+    applyBulkTags(dashboardIds, tagsToAdd, tagsToRemove)
+    trackEvent('bulk_tags_applied', undefined, {
+      dashboardCount: dashboardIds.length,
+      tagsAdded: tagsToAdd.length,
+      tagsRemoved: tagsToRemove.length
+    })
+  }
+
   const remainingSlots = MAX_DASHBOARDS - dashboards.length
 
   return (
@@ -183,11 +195,13 @@ function App() {
               onAdd={handleAddClick}
               onTemplates={() => setTemplatesOpen(true)}
               onSuggestions={() => setSuggestionsOpen(true)}
+              onBulkTags={() => setBulkTagOpen(true)}
               onImport={() => setImportOpen(true)}
               onExport={() => setExportOpen(true)}
               onAnalytics={() => setAnalyticsOpen(true)}
               canAdd={canAddDashboard}
               canExport={dashboards.length > 0}
+              hasDashboards={dashboards.length > 0}
             />
           </div>
 
@@ -283,6 +297,13 @@ function App() {
         dashboards={dashboards}
         events={events}
         onClearAnalytics={handleClearAnalytics}
+      />
+
+      <BulkTagDialog
+        open={bulkTagOpen}
+        onOpenChange={setBulkTagOpen}
+        dashboards={dashboards}
+        onApplyBulkTags={handleBulkTags}
       />
     </div>
   )

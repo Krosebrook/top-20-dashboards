@@ -3,7 +3,8 @@
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
 **Recent Updates:**
-- **Custom Tags & Advanced Filtering (Current)**: Added custom tagging system with tag input component, tag-based filtering with visual tag selector, advanced filtering options including multi-field sorting (title, date, priority, status, category), display filters (show only dashboards with tags), and comprehensive filter management
+- **Bulk Tag Operations (Current)**: Added bulk tag management dialog for applying tag changes to multiple dashboards simultaneously, including selection interface with search, add/remove tag operations, common tag detection, and quick tag suggestions
+- **Custom Tags & Advanced Filtering**: Added custom tagging system with tag input component, tag-based filtering with visual tag selector, advanced filtering options including multi-field sorting (title, date, priority, status, category), display filters (show only dashboards with tags), and comprehensive filter management
 - **Analytics & Usage Tracking**: Added comprehensive analytics system to track dashboard interactions, usage patterns, and provide insights into user behavior
 - **Refactoring**: Extracted business logic into custom hooks (`useDashboardManager`, `useDashboardFilters`, `useAnalytics`), created reusable UI components, separated utility functions into dedicated modules, improved type safety throughout
 
@@ -53,11 +54,11 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Success criteria**: Filter combinations work together seamlessly, search is instant, tag filtering shows dashboards with any selected tag, sorting is stable and predictable, advanced filters persist during session
 
 ### Custom Tags
-- **Functionality**: Add custom text tags to dashboards (up to 10 per dashboard); filter dashboards by one or multiple tags; view all available tags across dashboards; tags display on dashboard cards with visual badges
-- **Purpose**: Enable flexible, user-defined categorization beyond predefined categories; support cross-cutting concerns (e.g., "Q1-2024", "urgent", "needs-review"); improve discoverability through tag-based filtering
-- **Trigger**: Add/edit tags in dashboard dialog using tag input component; filter by tags using tag filter button in toolbar
-- **Progression**: Creating tags: User opens dashboard dialog → Types tag name in tag input → Presses Enter or comma → Tag appears as badge → Can add up to 10 tags → Can remove tags by clicking X. Filtering: User clicks Tags button → Sees all available tags → Selects one or more tags → Dashboard list filters to show matching dashboards → Selected tag count shows on button
-- **Success criteria**: Tags persist with dashboard data, tag input prevents duplicates, tags are case-sensitive, tag filter shows only tags that exist on dashboards, filtering by multiple tags uses OR logic (shows dashboards with any selected tag), export/import includes tags
+- **Functionality**: Add custom text tags to dashboards (up to 10 per dashboard); filter dashboards by one or multiple tags; view all available tags across dashboards; tags display on dashboard cards with visual badges; bulk tag operations for managing tags across multiple dashboards at once
+- **Purpose**: Enable flexible, user-defined categorization beyond predefined categories; support cross-cutting concerns (e.g., "Q1-2024", "urgent", "needs-review"); improve discoverability through tag-based filtering; efficiently manage tags across many dashboards
+- **Trigger**: Add/edit tags in dashboard dialog using tag input component; filter by tags using tag filter button in toolbar; click "Bulk Tags" button to manage tags across multiple dashboards
+- **Progression**: Creating tags: User opens dashboard dialog → Types tag name in tag input → Presses Enter or comma → Tag appears as badge → Can add up to 10 tags → Can remove tags by clicking X. Filtering: User clicks Tags button → Sees all available tags → Selects one or more tags → Dashboard list filters to show matching dashboards → Selected tag count shows on button. Bulk operations: User clicks "Bulk Tags" button → Dialog opens with searchable dashboard list → Selects multiple dashboards via checkboxes → Views common tags across selections → Adds new tags to all selected dashboards → Removes tags from all selected dashboards → Applies changes to all at once
+- **Success criteria**: Tags persist with dashboard data, tag input prevents duplicates, tags are case-sensitive, tag filter shows only tags that exist on dashboards, filtering by multiple tags uses OR logic (shows dashboards with any selected tag), export/import includes tags, bulk operations correctly add/remove tags from multiple dashboards, common tag detection works accurately, bulk changes tracked in analytics
 
 ### Export & Import
 - **Functionality**: Export all dashboards to JSON or CSV format; import dashboards from previously exported files
@@ -83,6 +84,9 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Import over limit**: Prevent imports that would exceed 20 dashboards, show clear error message with current count
 - **No analytics data**: Show empty state in analytics dialog when no events have been tracked yet
 - **Analytics data size**: Track indefinitely but provide clear analytics option to prevent storage bloat
+- **Bulk operations with no selection**: Disable apply button when no dashboards selected or no tag changes specified
+- **Bulk operations with filtered results**: Allow selecting from filtered results only; search helps narrow selection
+- **Removing non-existent tags**: Bulk remove operation silently skips tags that don't exist on specific dashboards
 
 ## Design Direction
 The design should feel professional and organized like a productivity tool, with a clean, modern aesthetic inspired by project management interfaces. A minimal interface with purposeful use of color to indicate status and priority serves the organizational purpose best.
