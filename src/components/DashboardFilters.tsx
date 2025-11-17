@@ -2,6 +2,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { TagFilter } from '@/components/TagFilter'
+import { AdvancedFilters, type SortField, type SortDirection } from '@/components/AdvancedFilters'
 import { MagnifyingGlass, FunnelSimple, X } from '@phosphor-icons/react'
 import type { Priority, Status, Category } from '@/lib/types'
 import { MAX_DASHBOARDS } from '@/lib/constants'
@@ -15,6 +17,14 @@ interface DashboardFiltersProps {
   onPriorityChange: (value: Priority | 'all') => void
   filterStatus: Status | 'all'
   onStatusChange: (value: Status | 'all') => void
+  filterTags: string[]
+  onTagsChange: (tags: string[]) => void
+  availableTags: string[]
+  sortField: SortField
+  sortDirection: SortDirection
+  onSortChange: (field: SortField, direction: SortDirection) => void
+  showOnlyWithTags: boolean
+  onShowOnlyWithTagsChange: (value: boolean) => void
   hasActiveFilters: boolean
   onClearFilters: () => void
   remainingSlots: number
@@ -30,6 +40,14 @@ export function DashboardFilters({
   onPriorityChange,
   filterStatus,
   onStatusChange,
+  filterTags,
+  onTagsChange,
+  availableTags,
+  sortField,
+  sortDirection,
+  onSortChange,
+  showOnlyWithTags,
+  onShowOnlyWithTagsChange,
   hasActiveFilters,
   onClearFilters,
   remainingSlots,
@@ -93,8 +111,22 @@ export function DashboardFilters({
           </SelectContent>
         </Select>
 
+        <TagFilter
+          availableTags={availableTags}
+          selectedTags={filterTags}
+          onTagsChange={onTagsChange}
+        />
+
+        <AdvancedFilters
+          sortField={sortField}
+          sortDirection={sortDirection}
+          onSortChange={onSortChange}
+          showOnlyWithTags={showOnlyWithTags}
+          onShowOnlyWithTagsChange={onShowOnlyWithTagsChange}
+        />
+
         {hasActiveFilters && (
-          <Button variant="outline" size="sm" onClick={onClearFilters}>
+          <Button variant="outline" size="sm" onClick={onClearFilters} className="h-9">
             <X className="mr-2 h-4 w-4" />
             Clear Filters
           </Button>

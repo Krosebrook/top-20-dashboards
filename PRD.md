@@ -3,7 +3,8 @@
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
 **Recent Updates:**
-- **Analytics & Usage Tracking (Current)**: Added comprehensive analytics system to track dashboard interactions, usage patterns, and provide insights into user behavior
+- **Custom Tags & Advanced Filtering (Current)**: Added custom tagging system with tag input component, tag-based filtering with visual tag selector, advanced filtering options including multi-field sorting (title, date, priority, status, category), display filters (show only dashboards with tags), and comprehensive filter management
+- **Analytics & Usage Tracking**: Added comprehensive analytics system to track dashboard interactions, usage patterns, and provide insights into user behavior
 - **Refactoring**: Extracted business logic into custom hooks (`useDashboardManager`, `useDashboardFilters`, `useAnalytics`), created reusable UI components, separated utility functions into dedicated modules, improved type safety throughout
 
 **Experience Qualities**: 
@@ -45,11 +46,18 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Success criteria**: Status changes are immediate and persistent
 
 ### Filtering & Search
-- **Functionality**: Filter dashboards by category, priority, status; search by title/description
-- **Purpose**: Quickly find specific dashboards in large list
-- **Trigger**: User types in search box or selects filter chips
-- **Progression**: User applies filter → List updates instantly → Relevant dashboards shown → Clear filters to reset
-- **Success criteria**: Filter combinations work together, search is instant
+- **Functionality**: Filter dashboards by category, priority, status, and custom tags; search by title/description; advanced sorting by multiple fields (title, date, priority, status, category); display filters for showing only tagged dashboards
+- **Purpose**: Quickly find specific dashboards in large list, organize by multiple criteria, discover related dashboards through tags
+- **Trigger**: User types in search box, selects filter dropdowns, clicks tag filter button, or opens advanced filters popover
+- **Progression**: User applies filter → List updates instantly → Relevant dashboards shown → Can combine multiple filters → Click tag button to select multiple tags → Use advanced filters for sorting and display options → Clear filters to reset
+- **Success criteria**: Filter combinations work together seamlessly, search is instant, tag filtering shows dashboards with any selected tag, sorting is stable and predictable, advanced filters persist during session
+
+### Custom Tags
+- **Functionality**: Add custom text tags to dashboards (up to 10 per dashboard); filter dashboards by one or multiple tags; view all available tags across dashboards; tags display on dashboard cards with visual badges
+- **Purpose**: Enable flexible, user-defined categorization beyond predefined categories; support cross-cutting concerns (e.g., "Q1-2024", "urgent", "needs-review"); improve discoverability through tag-based filtering
+- **Trigger**: Add/edit tags in dashboard dialog using tag input component; filter by tags using tag filter button in toolbar
+- **Progression**: Creating tags: User opens dashboard dialog → Types tag name in tag input → Presses Enter or comma → Tag appears as badge → Can add up to 10 tags → Can remove tags by clicking X. Filtering: User clicks Tags button → Sees all available tags → Selects one or more tags → Dashboard list filters to show matching dashboards → Selected tag count shows on button
+- **Success criteria**: Tags persist with dashboard data, tag input prevents duplicates, tags are case-sensitive, tag filter shows only tags that exist on dashboards, filtering by multiple tags uses OR logic (shows dashboards with any selected tag), export/import includes tags
 
 ### Export & Import
 - **Functionality**: Export all dashboards to JSON or CSV format; import dashboards from previously exported files

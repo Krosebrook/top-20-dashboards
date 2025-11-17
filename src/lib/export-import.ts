@@ -24,13 +24,14 @@ export function exportToJSON(dashboards: Dashboard[]): void {
 }
 
 export function exportToCSV(dashboards: Dashboard[]): void {
-  const headers = ['Title', 'Description', 'Category', 'Priority', 'Status', 'Created At']
+  const headers = ['Title', 'Description', 'Category', 'Priority', 'Status', 'Tags', 'Created At']
   const rows = dashboards.map(d => [
     d.title,
     d.description,
     d.category,
     d.priority,
     d.status,
+    (d.tags || []).join(';'),
     new Date(d.createdAt).toISOString()
   ])
 
@@ -81,6 +82,9 @@ export function parseCSV(content: string): Partial<Dashboard>[] {
       else if (header === 'category') dashboard.category = value as Dashboard['category']
       else if (header === 'priority') dashboard.priority = value as Dashboard['priority']
       else if (header === 'status') dashboard.status = value as Dashboard['status']
+      else if (header === 'tags') {
+        dashboard.tags = value ? value.split(';').map(t => t.trim()).filter(t => t) : []
+      }
       else if (header === 'created at') {
         const date = new Date(value)
         dashboard.createdAt = isNaN(date.getTime()) ? Date.now() : date.getTime()
@@ -105,6 +109,7 @@ export function validateImportedDashboards(dashboards: Partial<Dashboard>[]): Da
       category: VALID_CATEGORIES.includes(d.category as any) ? d.category as Dashboard['category'] : 'other',
       priority: VALID_PRIORITIES.includes(d.priority as any) ? d.priority as Dashboard['priority'] : 'medium',
       status: VALID_STATUSES.includes(d.status as any) ? d.status as Dashboard['status'] : 'not-started',
+      tags: Array.isArray(d.tags) ? d.tags : [],
       createdAt: d.createdAt || Date.now()
     }))
 }

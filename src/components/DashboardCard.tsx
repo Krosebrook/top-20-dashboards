@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { PencilSimple, Trash } from '@phosphor-icons/react'
+import { PencilSimple, Trash, Tag } from '@phosphor-icons/react'
 import type { Dashboard } from '@/lib/types'
 import { PRIORITY_CONFIG, STATUS_CONFIG, CATEGORY_CONFIG } from '@/lib/constants'
 import { motion } from 'framer-motion'
@@ -58,6 +58,21 @@ export function DashboardCard({ dashboard, onEdit, onDelete }: DashboardCardProp
             {STATUS_CONFIG[dashboard.status].label}
           </Badge>
         </div>
+
+        {dashboard.tags && dashboard.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {dashboard.tags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="text-xs px-2 py-0.5 flex items-center gap-1"
+              >
+                <Tag className="h-3 w-3" weight="bold" />
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
 
         <div className="text-xs text-muted-foreground">
           {CATEGORY_CONFIG[dashboard.category]}

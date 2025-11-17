@@ -46,6 +46,14 @@ function App() {
     setFilterStatus,
     filterCategory,
     setFilterCategory,
+    filterTags,
+    setFilterTags,
+    availableTags,
+    sortField,
+    sortDirection,
+    handleSortChange,
+    showOnlyWithTags,
+    setShowOnlyWithTags,
     filteredDashboards,
     hasActiveFilters,
     clearFilters,
@@ -66,9 +74,10 @@ function App() {
         filterPriority,
         filterStatus,
         filterCategory,
+        filterTags,
       })
     }
-  }, [searchQuery, filterPriority, filterStatus, filterCategory])
+  }, [searchQuery, filterPriority, filterStatus, filterCategory, filterTags])
 
   const handleAddClick = () => {
     if (!canAddDashboard) {
@@ -191,6 +200,14 @@ function App() {
             onPriorityChange={(value) => setFilterPriority(value as Priority | 'all')}
             filterStatus={filterStatus}
             onStatusChange={(value) => setFilterStatus(value as Status | 'all')}
+            filterTags={filterTags}
+            onTagsChange={setFilterTags}
+            availableTags={availableTags}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSortChange={handleSortChange}
+            showOnlyWithTags={showOnlyWithTags}
+            onShowOnlyWithTagsChange={setShowOnlyWithTags}
             hasActiveFilters={hasActiveFilters}
             onClearFilters={clearFilters}
             remainingSlots={remainingSlots}

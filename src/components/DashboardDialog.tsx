@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { CategorySelect } from '@/components/CategorySelect'
 import { PrioritySelect } from '@/components/PrioritySelect'
 import { StatusSelect } from '@/components/StatusSelect'
+import { TagInput } from '@/components/TagInput'
 import { useState, useEffect } from 'react'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 
@@ -22,6 +23,7 @@ export function DashboardDialog({ open, onOpenChange, onSave, editingDashboard }
   const [category, setCategory] = useState<Category>('analytics')
   const [priority, setPriority] = useState<Priority>('medium')
   const [status, setStatus] = useState<Status>('not-started')
+  const [tags, setTags] = useState<string[]>([])
 
   useEffect(() => {
     if (editingDashboard) {
@@ -30,12 +32,14 @@ export function DashboardDialog({ open, onOpenChange, onSave, editingDashboard }
       setCategory(editingDashboard.category)
       setPriority(editingDashboard.priority)
       setStatus(editingDashboard.status)
+      setTags(editingDashboard.tags || [])
     } else {
       setTitle('')
       setDescription('')
       setCategory('analytics')
       setPriority('medium')
       setStatus('not-started')
+      setTags([])
     }
   }, [editingDashboard, open])
 
@@ -48,6 +52,7 @@ export function DashboardDialog({ open, onOpenChange, onSave, editingDashboard }
       category,
       priority,
       status,
+      tags,
     })
   }
 
@@ -107,6 +112,16 @@ export function DashboardDialog({ open, onOpenChange, onSave, editingDashboard }
                 onChange={setStatus}
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="tags">Tags</Label>
+            <TagInput
+              tags={tags}
+              onChange={setTags}
+              placeholder="Add tags to organize dashboards..."
+              maxTags={10}
+            />
           </div>
         </div>
 

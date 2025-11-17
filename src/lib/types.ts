@@ -9,6 +9,7 @@ export interface Dashboard {
   category: Category
   priority: Priority
   status: Status
+  tags: string[]
   createdAt: number
 }
 

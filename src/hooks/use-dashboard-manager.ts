@@ -1,4 +1,5 @@
 import { useKV } from '@github/spark/hooks'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
 import type { Dashboard, Status } from '@/lib/types'
 import { createDashboard, updateDashboard } from '@/lib/dashboard-utils'
@@ -7,6 +8,20 @@ import type { DashboardTemplate } from '@/lib/dashboard-templates'
 
 export function useDashboardManager() {
   const [dashboards, setDashboards] = useKV<Dashboard[]>('dashboards', [])
+
+  useEffect(() => {
+    if (dashboards && dashboards.length > 0) {
+      const needsMigration = dashboards.some(d => !d.tags)
+      if (needsMigration) {
+        setDashboards((current) =>
+          (current || []).map(d => ({
+            ...d,
+            tags: d.tags || []
+          }))
+        )
+      }
+    }
+  }, [])
 
   const canAddDashboard = (dashboards || []).length < MAX_DASHBOARDS
 
@@ -60,6 +75,7 @@ export function useDashboardManager() {
       category: template.category,
       priority: template.priority,
       status: 'not-started',
+      tags: [],
     })
     return result !== null
   }
