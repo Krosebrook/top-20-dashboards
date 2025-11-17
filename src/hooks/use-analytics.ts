@@ -23,17 +23,20 @@ export function useAnalytics(dashboards: Dashboard[]) {
     metadata?: Record<string, any>
   ) => {
     const event = createAnalyticsEvent(type, dashboardId, metadata)
-    setEvents((current) => [...(current || []), event])
-
-    if (dashboardId) {
-      const allEvents = [...(events || []), event]
-      const stats = calculateDashboardStats(dashboardId, allEvents)
-      setUsageStats((current) => ({
-        ...(current || {}),
-        [dashboardId]: stats,
-      }))
-    }
-  }, [events, setEvents, setUsageStats])
+    setEvents((current) => {
+      const updated = [...(current || []), event]
+      
+      if (dashboardId) {
+        const stats = calculateDashboardStats(dashboardId, updated)
+        setUsageStats((currentStats) => ({
+          ...(currentStats || {}),
+          [dashboardId]: stats,
+        }))
+      }
+      
+      return updated
+    })
+  }, [setEvents, setUsageStats])
 
   const overallAnalytics = useMemo(() => {
     return calculateOverallAnalytics(dashboards, events || [])
