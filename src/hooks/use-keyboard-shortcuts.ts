@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 
-export interface KeyboardShortcut {
-  key: string
   ctrl?: boolean
-  shift?: boolean
-  alt?: boolean
-  meta?: boolean
+  alt?: boole
+  action: () => 
+}
+export function
+    if (!enabled
   action: () => void
   description: string
-}
+ 
 
 export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = true) {
   useEffect(() => {
@@ -16,7 +16,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        document.activeElement?.tagName === 'INPUT' ||
+
         document.activeElement?.tagName === 'TEXTAREA' ||
         document.activeElement?.tagName === 'SELECT'
       ) {
@@ -33,30 +33,30 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
           event.preventDefault()
           shortcut.action()
           break
-        }
-      }
-    }
+    parts
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [shortcuts, enabled])
-}
 
-export function formatShortcut(shortcut: KeyboardShortcut): string {
-  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPod|iPad/.test(navigator.userAgent)
-  const parts: string[] = []
 
-  if (shortcut.ctrl || shortcut.meta) {
-    parts.push(isMac ? '⌘' : 'Ctrl')
-  }
-  if (shortcut.shift) {
-    parts.push(isMac ? '⇧' : 'Shift')
-  }
-  if (shortcut.alt) {
-    parts.push(isMac ? '⌥' : 'Alt')
-  }
-  
-  parts.push(shortcut.key.toUpperCase())
 
-  return parts.join(isMac ? '' : '+')
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
