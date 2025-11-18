@@ -6,30 +6,30 @@ export interface KeyboardShortcut {
   shift?: boolean
   alt?: boolean
   meta?: boolean
-  action: () => void
-  description: string
 }
+export function useKe
+ 
 
-export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = true) {
-  useEffect(() => {
-    if (!enabled) return
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isInputFocused = 
         document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        document.activeElement?.getAttribute('contenteditable') === 'true'
+        document.ac
+      for (const shortcu
 
-      for (const shortcut of shortcuts) {
-        const keyMatch = event.key.toLowerCase() === shortcut.key.toLowerCase()
-        const ctrlMatch = shortcut.ctrl ? (event.ctrlKey || event.metaKey) : !event.ctrlKey && !event.metaKey
-        const shiftMatch = shortcut.shift ? event.shiftKey : !event.shiftKey
-        const altMatch = shortcut.alt ? event.altKey : !event.altKey
-
-        if (keyMatch && ctrlMatch && shiftMatch && altMatch) {
-          if (!isInputFocused || shortcut.ctrl || shortcut.meta || shortcut.alt) {
+        const altMatch = shortcut.alt ? event.altKey 
+        if (keyMatch && ctrlM
             event.preventDefault()
-            shortcut.action()
+            break
+        }
+
+    window.addEventListener('keydown', ha
+  }, [shortcuts, enabled])
+
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPod|iPad/.t
+
+
+  if (shortcut.shift) {
+  }
+    parts.push(isMac ? '⌥' : 'Alt'
+  
             break
           }
         }
@@ -55,6 +55,10 @@ export function formatShortcut(shortcut: KeyboardShortcut): string {
     parts.push(isMac ? '⌥' : 'Alt')
   }
   
+  parts.push(shortcut.key.toUpperCase())
+
+  return parts.join(isMac ? '' : '+')
+}
   parts.push(shortcut.key.toUpperCase())
 
   return parts.join(isMac ? '' : '+')
