@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { DashboardCard } from '@/components/DashboardCard'
 import { DashboardDialog } from '@/components/DashboardDialog'
 import { DashboardFilters } from '@/components/DashboardFilters'
@@ -9,11 +9,14 @@ import { ImportDialog } from '@/components/ImportDialog'
 import { TemplatesDialog } from '@/components/TemplatesDialog'
 import { AnalyticsDialog } from '@/components/AnalyticsDialog'
 import { BulkTagDialog } from '@/components/BulkTagDialog'
+import { KeyboardShortcutsDialog } from '@/components/KeyboardShortcutsDialog'
+import { KeyboardShortcutHint } from '@/components/KeyboardShortcutHint'
 import { EmptyState } from '@/components/EmptyState'
 import { Toaster, toast } from 'sonner'
 import { useDashboardManager } from '@/hooks/use-dashboard-manager'
 import { useDashboardFilters } from '@/hooks/use-dashboard-filters'
 import { useAnalytics } from '@/hooks/use-analytics'
+import { useKeyboardShortcuts, type KeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
 import { MAX_DASHBOARDS } from '@/lib/constants'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 
@@ -68,6 +71,7 @@ function App() {
   const [templatesOpen, setTemplatesOpen] = useState(false)
   const [analyticsOpen, setAnalyticsOpen] = useState(false)
   const [bulkTagOpen, setBulkTagOpen] = useState(false)
+  const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
 
   useEffect(() => {
@@ -92,6 +96,88 @@ function App() {
     setEditingDashboard(null)
     setDialogOpen(true)
   }
+
+  const shortcuts = useMemo<KeyboardShortcut[]>(() => [
+    {
+      key: 'n',
+      ctrl: true,
+      action: handleAddClick,
+      description: 'Add new dashboard',
+    },
+    {
+      key: 'k',
+      ctrl: true,
+      action: () => document.querySelector<HTMLInputElement>('input[type="search"]')?.focus(),
+      description: 'Focus search',
+    },
+    {
+      key: 'b',
+      ctrl: true,
+      action: () => {
+        if (dashboards.length > 0) {
+          setBulkTagOpen(true)
+        } else {
+          toast.error('No dashboards to tag')
+        }
+      },
+      description: 'Open bulk tag dialog',
+    },
+    {
+      key: 't',
+      ctrl: true,
+      action: () => setTemplatesOpen(true),
+      description: 'Open templates',
+    },
+    {
+      key: 's',
+      ctrl: true,
+      action: () => setSuggestionsOpen(true),
+      description: 'Open suggestions',
+    },
+    {
+      key: 'e',
+      ctrl: true,
+      action: () => {
+        if (dashboards.length > 0) {
+          setExportOpen(true)
+        } else {
+          toast.error('No dashboards to export')
+        }
+      },
+      description: 'Export dashboards',
+    },
+    {
+      key: 'i',
+      ctrl: true,
+      action: () => setImportOpen(true),
+      description: 'Import dashboards',
+    },
+    {
+      key: 'a',
+      ctrl: true,
+      action: () => setAnalyticsOpen(true),
+      description: 'View analytics',
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        if (hasActiveFilters) {
+          clearFilters()
+          toast.success('Filters cleared')
+        }
+      },
+      description: 'Clear all filters',
+    },
+    {
+      key: '/',
+      action: () => {
+        setShortcutsOpen(true)
+      },
+      description: 'Show keyboard shortcuts',
+    },
+  ], [dashboards.length, hasActiveFilters, clearFilters])
+
+  useKeyboardShortcuts(shortcuts)
 
   const handleEditClick = (dashboard: Dashboard) => {
     trackEvent('dashboard_viewed', dashboard.id)
@@ -179,6 +265,7 @@ function App() {
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       <Toaster position="top-center" />
+      <KeyboardShortcutHint onOpenShortcuts={() => setShortcutsOpen(true)} />
       
       <div className="flex-shrink-0 border-b border-border bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
@@ -199,6 +286,7 @@ function App() {
               onImport={() => setImportOpen(true)}
               onExport={() => setExportOpen(true)}
               onAnalytics={() => setAnalyticsOpen(true)}
+              onKeyboardShortcuts={() => setShortcutsOpen(true)}
               canAdd={canAddDashboard}
               canExport={dashboards.length > 0}
               hasDashboards={dashboards.length > 0}
@@ -304,6 +392,12 @@ function App() {
         onOpenChange={setBulkTagOpen}
         dashboards={dashboards}
         onApplyBulkTags={handleBulkTags}
+      />
+
+      <KeyboardShortcutsDialog
+        open={shortcutsOpen}
+        onOpenChange={setShortcutsOpen}
+        shortcuts={shortcuts}
       />
     </div>
   )

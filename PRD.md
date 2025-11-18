@@ -3,7 +3,8 @@
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
 **Recent Updates:**
-- **Bulk Tag Operations (Current)**: Added bulk tag management dialog for applying tag changes to multiple dashboards simultaneously, including selection interface with search, add/remove tag operations, common tag detection, and quick tag suggestions
+- **Keyboard Shortcuts (Current)**: Added comprehensive keyboard shortcuts for all common actions including add dashboard (Ctrl+N), search focus (Ctrl+K), bulk tags (Ctrl+B), templates (Ctrl+T), suggestions (Ctrl+S), export (Ctrl+E), import (Ctrl+I), analytics (Ctrl+A), clear filters (Esc), and help dialog (/). Added keyboard shortcuts dialog with categorized shortcuts and visual key indicators. Added keyboard icon button in toolbar for quick access to shortcuts reference.
+- **Bulk Tag Operations**: Added bulk tag management dialog for applying tag changes to multiple dashboards simultaneously, including selection interface with search, add/remove tag operations, common tag detection, and quick tag suggestions
 - **Custom Tags & Advanced Filtering**: Added custom tagging system with tag input component, tag-based filtering with visual tag selector, advanced filtering options including multi-field sorting (title, date, priority, status, category), display filters (show only dashboards with tags), and comprehensive filter management
 - **Analytics & Usage Tracking**: Added comprehensive analytics system to track dashboard interactions, usage patterns, and provide insights into user behavior
 - **Refactoring**: Extracted business logic into custom hooks (`useDashboardManager`, `useDashboardFilters`, `useAnalytics`), created reusable UI components, separated utility functions into dedicated modules, improved type safety throughout
@@ -74,6 +75,13 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Progression**: User clicks analytics → Dialog opens with three tabs (Overview, Usage Details, Activity Log) → User views statistics, trends, top dashboards → Can clear analytics if needed
 - **Success criteria**: All interactions are tracked persistently, analytics provide actionable insights, visualizations are clear and meaningful, no performance impact on main app
 
+### Keyboard Shortcuts
+- **Functionality**: Comprehensive keyboard shortcuts for all common actions; shortcuts help dialog with categorized list and visual key indicators; shortcuts work globally across the app; smart input detection prevents conflicts with text fields
+- **Purpose**: Speed up power user workflows, reduce mouse dependency, improve accessibility, provide faster access to frequently used features
+- **Trigger**: Press keyboard combinations (Ctrl+N, Ctrl+K, Ctrl+B, etc.); press "/" key to view shortcuts dialog; click keyboard icon in toolbar
+- **Progression**: User presses shortcut → Action executes immediately (dialog opens, filter clears, etc.) → Optional toast feedback for some actions. Help: User presses "/" or clicks keyboard icon → Shortcuts dialog opens → User views categorized shortcuts (Creating & Adding, Filtering & Search, Import & Export, Organization, Tools & Help) → Dialog shows visual key indicators
+- **Success criteria**: All shortcuts work reliably, no conflicts with browser shortcuts, shortcuts disabled in text inputs (except Ctrl combinations), shortcuts dialog is comprehensive and easy to scan, keyboard icon is visible and discoverable
+
 ## Edge Case Handling
 - **Empty state**: Show welcoming empty state with "Add your first dashboard" CTA when no dashboards exist
 - **Maximum limit**: Warn user when approaching 20 dashboard limit, prevent adding beyond 20, import dialog shows available slots
@@ -87,6 +95,9 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Bulk operations with no selection**: Disable apply button when no dashboards selected or no tag changes specified
 - **Bulk operations with filtered results**: Allow selecting from filtered results only; search helps narrow selection
 - **Removing non-existent tags**: Bulk remove operation silently skips tags that don't exist on specific dashboards
+- **Keyboard shortcuts in inputs**: Shortcuts disabled when typing in text fields (except Ctrl/Cmd combinations which work globally)
+- **Browser shortcut conflicts**: Use Ctrl/Cmd combinations to avoid conflicts with browser shortcuts; Escape only clears filters if active
+- **Mac vs Windows shortcuts**: Display appropriate modifier keys (⌘ on Mac, Ctrl on Windows) in shortcuts dialog
 
 ## Design Direction
 The design should feel professional and organized like a productivity tool, with a clean, modern aesthetic inspired by project management interfaces. A minimal interface with purposeful use of color to indicate status and priority serves the organizational purpose best.
@@ -160,6 +171,8 @@ Animations should be subtle and purposeful, reinforcing interactions without slo
   - Eye (view tracking)
   - Clock (time-based stats)
   - Calendar (date information)
+  - Keyboard (keyboard shortcuts)
+  - Tag (tags and bulk operations)
   
 - **Spacing**: 
   - Container padding: p-6 on desktop, p-4 on mobile
