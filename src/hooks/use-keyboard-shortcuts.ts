@@ -1,13 +1,32 @@
 import { useEffect } from 'react'
 
+export type KeyboardShortcut = {
+  key: string
   ctrl?: boolean
-  alt?: boole
-  ctrl?: boolean
-
-  const parts: 
+  shift?: boolean
+  alt?: boolean
   action: () => void
   description: string
- 
+}
+
+export function formatShortcut(shortcut: KeyboardShortcut): string {
+  const parts: string[] = []
+  
+  if (shortcut.ctrl) {
+    parts.push('Ctrl')
+  }
+  if (shortcut.shift) {
+    parts.push('Shift')
+  }
+  if (shortcut.alt) {
+    parts.push('Alt')
+  }
+  
+  const keyDisplay = shortcut.key === 'Escape' ? 'Esc' : shortcut.key.toUpperCase()
+  parts.push(keyDisplay)
+  
+  return parts.join(' + ')
+}
 
 export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = true) {
   useEffect(() => {
@@ -15,7 +34,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-      if (
+        document.activeElement?.tagName === 'INPUT' ||
         document.activeElement?.tagName === 'TEXTAREA' ||
         document.activeElement?.tagName === 'SELECT'
       ) {
@@ -32,11 +51,11 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
           event.preventDefault()
           shortcut.action()
           break
+        }
+      }
+    }
 
-
-
-
-
-
-
-
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [shortcuts, enabled])
+}
