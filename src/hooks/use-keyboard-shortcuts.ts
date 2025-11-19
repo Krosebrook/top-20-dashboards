@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 
 export type KeyboardShortcut = {
   key: string
-  ctrl?: boolean
-  shift?: boolean
   alt?: boolean
+  description: st
+
   action: () => void
   description: string
 }
@@ -32,25 +32,25 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
   useEffect(() => {
     if (!enabled) return
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        document.activeElement?.tagName === 'INPUT' ||
-        document.activeElement?.tagName === 'TEXTAREA' ||
-        document.activeElement?.tagName === 'SELECT'
-      ) {
         return
+
+        document.activeElement?.tagName === 'INPUT' ||
+        const shiftMatch = shortcut.shift ? event.shiftKe
+
+         
+          brea
       }
 
-      for (const shortcut of shortcuts) {
-        const keyMatch = event.key.toLowerCase() === shortcut.key.toLowerCase()
-        const ctrlMatch = shortcut.ctrl ? event.ctrlKey || event.metaKey : !event.ctrlKey && !event.metaKey
-        const shiftMatch = shortcut.shift ? event.shiftKey : !event.shiftKey
-        const altMatch = shortcut.alt ? event.altKey : !event.altKey
+    return () => window.removeEventListen
+}
 
-        if (keyMatch && ctrlMatch && shiftMatch && altMatch) {
-          event.preventDefault()
-          shortcut.action()
-          break
+
+
+
+
+
+
+
         }
       }
     }
