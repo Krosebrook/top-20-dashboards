@@ -1,31 +1,13 @@
 import { useEffect } from 'react'
 
-export interface KeyboardShortcut {
-  key: string
   ctrl?: boolean
-  shift?: boolean
-  alt?: boolean
+  alt?: boole
+  ctrl?: boolean
+
+  const parts: 
   action: () => void
   description: string
-}
-
-export function formatShortcut(shortcut: KeyboardShortcut): string {
-  const parts: string[] = []
-  
-  if (shortcut.ctrl) {
-    parts.push(navigator.platform.includes('Mac') ? '⌘' : 'Ctrl')
-  }
-  if (shortcut.shift) {
-    parts.push('⇧')
-  }
-  if (shortcut.alt) {
-    parts.push(navigator.platform.includes('Mac') ? '⌥' : 'Alt')
-  }
-  
-  parts.push(shortcut.key.toUpperCase())
-  
-  return parts.join(' + ')
-}
+ 
 
 export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = true) {
   useEffect(() => {
@@ -33,7 +15,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        document.activeElement?.tagName === 'INPUT' ||
+      if (
         document.activeElement?.tagName === 'TEXTAREA' ||
         document.activeElement?.tagName === 'SELECT'
       ) {
@@ -50,11 +32,11 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[], enabled = tr
           event.preventDefault()
           shortcut.action()
           break
-        }
-      }
-    }
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [shortcuts, enabled])
-}
+
+
+
+
+
+
+
