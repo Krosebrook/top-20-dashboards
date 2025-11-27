@@ -16,11 +16,13 @@ export function useDashboardFilters(dashboards: Dashboard[]) {
 
   const availableTags = useMemo(() => {
     const tagSet = new Set<string>()
-    dashboards.forEach(dashboard => {
-      if (dashboard.tags) {
-        dashboard.tags.forEach(tag => tagSet.add(tag))
-      }
-    })
+    if (dashboards && Array.isArray(dashboards)) {
+      dashboards.forEach(dashboard => {
+        if (dashboard?.tags && Array.isArray(dashboard.tags)) {
+          dashboard.tags.forEach(tag => tagSet.add(tag))
+        }
+      })
+    }
     return Array.from(tagSet).sort()
   }, [dashboards])
 
@@ -34,13 +36,13 @@ export function useDashboardFilters(dashboards: Dashboard[]) {
 
     if (filterTags.length > 0) {
       filtered = filtered.filter(dashboard =>
-        dashboard.tags && dashboard.tags.some(tag => filterTags.includes(tag))
+        dashboard?.tags && Array.isArray(dashboard.tags) && dashboard.tags.some(tag => filterTags.includes(tag))
       )
     }
 
     if (showOnlyWithTags) {
       filtered = filtered.filter(dashboard => 
-        dashboard.tags && dashboard.tags.length > 0
+        dashboard?.tags && Array.isArray(dashboard.tags) && dashboard.tags.length > 0
       )
     }
 

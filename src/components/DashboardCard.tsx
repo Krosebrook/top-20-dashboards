@@ -59,7 +59,7 @@ export function DashboardCard({ dashboard, onEdit, onDelete }: DashboardCardProp
           </Badge>
         </div>
 
-        {dashboard.tags && dashboard.tags.length > 0 && (
+        {dashboard?.tags && Array.isArray(dashboard.tags) && dashboard.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">
             {dashboard.tags.map((tag) => (
               <Badge

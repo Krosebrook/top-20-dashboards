@@ -26,7 +26,11 @@ export function BulkTagDialog({ open, onOpenChange, dashboards, onApplyBulkTags 
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>()
-    dashboards.forEach(d => d.tags.forEach(tag => tagSet.add(tag)))
+    dashboards.forEach(d => {
+      if (d?.tags && Array.isArray(d.tags)) {
+        d.tags.forEach(tag => tagSet.add(tag))
+      }
+    })
     return Array.from(tagSet).sort()
   }, [dashboards])
 
@@ -36,7 +40,7 @@ export function BulkTagDialog({ open, onOpenChange, dashboards, onApplyBulkTags 
     return dashboards.filter(d => 
       d.title.toLowerCase().includes(query) ||
       d.description.toLowerCase().includes(query) ||
-      d.tags.some(tag => tag.toLowerCase().includes(query))
+      (d?.tags && Array.isArray(d.tags) && d.tags.some(tag => tag.toLowerCase().includes(query)))
     )
   }, [dashboards, searchQuery])
 
@@ -51,9 +55,11 @@ export function BulkTagDialog({ open, onOpenChange, dashboards, onApplyBulkTags 
     
     const tagCounts = new Map<string, number>()
     selected.forEach(d => {
-      d.tags.forEach(tag => {
-        tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
-      })
+      if (d?.tags && Array.isArray(d.tags)) {
+        d.tags.forEach(tag => {
+          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
+        })
+      }
     })
     
     return Array.from(tagCounts.entries())
@@ -173,7 +179,7 @@ export function BulkTagDialog({ open, onOpenChange, dashboards, onApplyBulkTags 
                       <div className="text-xs text-muted-foreground truncate">
                         {dashboard.description}
                       </div>
-                      {dashboard.tags.length > 0 && (
+                      {dashboard?.tags && Array.isArray(dashboard.tags) && dashboard.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-2">
                           {dashboard.tags.map((tag) => (
                             <Badge key={tag} variant="secondary" className="text-xs">

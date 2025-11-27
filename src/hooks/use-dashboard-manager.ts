@@ -96,17 +96,21 @@ export function useDashboardManager() {
       (current || []).map((d) => {
         if (!dashboardIds.includes(d.id)) return d
 
-        let updatedTags = [...d.tags]
+        let updatedTags = Array.isArray(d.tags) ? [...d.tags] : []
         
-        tagsToRemove.forEach(tag => {
-          updatedTags = updatedTags.filter(t => t !== tag)
-        })
+        if (tagsToRemove && Array.isArray(tagsToRemove)) {
+          tagsToRemove.forEach(tag => {
+            updatedTags = updatedTags.filter(t => t !== tag)
+          })
+        }
         
-        tagsToAdd.forEach(tag => {
-          if (!updatedTags.includes(tag)) {
-            updatedTags.push(tag)
-          }
-        })
+        if (tagsToAdd && Array.isArray(tagsToAdd)) {
+          tagsToAdd.forEach(tag => {
+            if (!updatedTags.includes(tag)) {
+              updatedTags.push(tag)
+            }
+          })
+        }
 
         return { ...d, tags: updatedTags }
       })
