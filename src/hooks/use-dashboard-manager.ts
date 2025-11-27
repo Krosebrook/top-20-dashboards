@@ -1,8 +1,9 @@
 import { useKV } from '@github/spark/hooks'
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { toast } from 'sonner'
 import type { Dashboard, Status } from '@/lib/types'
 import { createDashboard, updateDashboard } from '@/lib/dashboard-utils'
+import { canAddDashboard, getAvailableSlots, validateDashboards } from '@/lib/validation'
 import { MAX_DASHBOARDS } from '@/lib/constants'
 import type { DashboardTemplate } from '@/lib/dashboard-templates'
 
@@ -23,10 +24,9 @@ export function useDashboardManager() {
     }
   }, [])
 
-  const canAddDashboard = (dashboards || []).length < MAX_DASHBOARDS
-
-  const addDashboard = (data: Omit<Dashboard, 'id' | 'createdAt'>) => {
-    if (!canAddDashboard) {
+  const addDashboard = useCallback((data: Omit<Dashboard, 'id' | 'createdAt'>) => {
+    const currentCount = (dashboards || []).length
+    if (!canAddDashboard(currentCount)) {
       toast.error('Maximum limit reached', {
         description: `You can only have up to ${MAX_DASHBOARDS} dashboards.`,
       })
@@ -37,9 +37,9 @@ export function useDashboardManager() {
     setDashboards((current) => [...(current || []), newDashboard])
     toast.success('Dashboard added successfully')
     return newDashboard
-  }
+  }, [dashboards, setDashboards])
 
-  const updateExistingDashboard = (
+  const updateExistingDashboard = useCallback((
     id: string,
     updates: Partial<Omit<Dashboard, 'id' | 'createdAt'>>
   ) => {
@@ -49,14 +49,14 @@ export function useDashboardManager() {
       )
     )
     toast.success('Dashboard updated successfully')
-  }
+  }, [setDashboards])
 
-  const deleteDashboard = (id: string) => {
+  const deleteDashboard = useCallback((id: string) => {
     setDashboards((current) => (current || []).filter((d) => d.id !== id))
     toast.success('Dashboard deleted')
-  }
+  }, [setDashboards])
 
-  const addFromSuggestion = (
+  const addFromSuggestion = useCallback((
     suggestion: Omit<Dashboard, 'id' | 'createdAt' | 'status'> & {
       status?: Status
     }
@@ -66,9 +66,9 @@ export function useDashboardManager() {
       status: suggestion.status || 'not-started',
     })
     return result !== null
-  }
+  }, [addDashboard])
 
-  const addFromTemplate = (template: DashboardTemplate) => {
+  const addFromTemplate = useCallback((template: DashboardTemplate) => {
     const result = addDashboard({
       title: template.title,
       description: template.description,
@@ -78,20 +78,30 @@ export function useDashboardManager() {
       tags: [],
     })
     return result !== null
-  }
+  }, [addDashboard])
 
-  const importDashboards = (importedDashboards: Dashboard[]) => {
+  const importDashboards = useCallback((importedDashboards: Dashboard[]) => {
     const currentDashboards = dashboards || []
-    const availableSlots = MAX_DASHBOARDS - currentDashboards.length
-    const toImport = importedDashboards.slice(0, availableSlots)
+    const availableSlots = getAvailableSlots(currentDashboards.length)
+    const validDashboards = validateDashboards(importedDashboards)
+    const toImport = validDashboards.slice(0, availableSlots)
+
+    if (toImport.length === 0) {
+      toast.error('No valid dashboards to import')
+      return
+    }
 
     setDashboards((current) => [...(current || []), ...toImport])
     toast.success(
       `Imported ${toImport.length} dashboard${toImport.length === 1 ? '' : 's'}`
     )
-  }
+  }, [dashboards, setDashboards])
 
-  const applyBulkTags = (dashboardIds: string[], tagsToAdd: string[], tagsToRemove: string[]) => {
+  const applyBulkTags = useCallback((
+    dashboardIds: string[], 
+    tagsToAdd: string[], 
+    tagsToRemove: string[]
+  ) => {
     setDashboards((current) =>
       (current || []).map((d) => {
         if (!dashboardIds.includes(d.id)) return d
@@ -123,11 +133,11 @@ export function useDashboardManager() {
     toast.success(`Bulk tag operation completed`, {
       description: `${addMsg}${separator}${removeMsg} for ${dashboardIds.length} dashboard${dashboardIds.length === 1 ? '' : 's'}`
     })
-  }
+  }, [setDashboards])
 
   return {
     dashboards: dashboards || [],
-    canAddDashboard,
+    canAddDashboard: canAddDashboard((dashboards || []).length),
     addDashboard,
     updateDashboard: updateExistingDashboard,
     deleteDashboard,

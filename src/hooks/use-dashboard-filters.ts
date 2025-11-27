@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 import { filterDashboards } from '@/lib/dashboard-utils'
 import { PRIORITY_CONFIG } from '@/lib/constants'
@@ -73,27 +73,28 @@ export function useDashboardFilters(dashboards: Dashboard[]) {
     return filtered
   }, [dashboards, searchQuery, filterPriority, filterStatus, filterCategory, filterTags, showOnlyWithTags, sortField, sortDirection])
 
-  const hasActiveFilters =
+  const hasActiveFilters = useMemo(() =>
     filterPriority !== 'all' ||
     filterStatus !== 'all' ||
     filterCategory !== 'all' ||
     filterTags.length > 0 ||
     searchQuery !== '' ||
     showOnlyWithTags
+  , [filterPriority, filterStatus, filterCategory, filterTags, searchQuery, showOnlyWithTags])
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSearchQuery('')
     setFilterPriority('all')
     setFilterStatus('all')
     setFilterCategory('all')
     setFilterTags([])
     setShowOnlyWithTags(false)
-  }
+  }, [])
 
-  const handleSortChange = (field: SortField, direction: SortDirection) => {
+  const handleSortChange = useCallback((field: SortField, direction: SortDirection) => {
     setSortField(field)
     setSortDirection(direction)
-  }
+  }, [])
 
   return {
     searchQuery,

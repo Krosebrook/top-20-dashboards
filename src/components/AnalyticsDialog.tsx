@@ -19,7 +19,8 @@ import {
 } from '@phosphor-icons/react'
 import type { OverallAnalytics, DashboardUsageStats, Dashboard } from '@/lib/types'
 import { PRIORITY_CONFIG, STATUS_CONFIG, CATEGORY_CONFIG } from '@/lib/constants'
-import { formatDuration, getActivityTrend, getMostActiveTime } from '@/lib/analytics'
+import { getActivityTrend, getMostActiveTime } from '@/lib/analytics'
+import { formatDuration } from '@/lib/formatting'
 import { useMemo } from 'react'
 
 interface AnalyticsDialogProps {

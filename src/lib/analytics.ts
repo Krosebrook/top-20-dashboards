@@ -137,17 +137,7 @@ export function calculateOverallAnalytics(
   }
 }
 
-export function formatDuration(ms: number): string {
-  if (ms < 60000) {
-    return `${Math.round(ms / 1000)}s`
-  } else if (ms < 3600000) {
-    return `${Math.round(ms / 60000)}m`
-  } else if (ms < 86400000) {
-    return `${Math.round(ms / 3600000)}h`
-  } else {
-    return `${Math.round(ms / 86400000)}d`
-  }
-}
+
 
 export function getActivityTrend(events: AnalyticsEvent[], days: number = 7): number[] {
   const now = Date.now()

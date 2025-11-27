@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { DashboardCard } from '@/components/DashboardCard'
 import { DashboardDialog } from '@/components/DashboardDialog'
 import { DashboardViewer } from '@/components/DashboardViewer'
@@ -18,6 +18,7 @@ import { useDashboardManager } from '@/hooks/use-dashboard-manager'
 import { useDashboardFilters } from '@/hooks/use-dashboard-filters'
 import { useAnalytics } from '@/hooks/use-analytics'
 import { useKeyboardShortcuts, type KeyboardShortcut } from '@/hooks/use-keyboard-shortcuts'
+import { useDialogState } from '@/hooks/use-dialog-state'
 import { MAX_DASHBOARDS } from '@/lib/constants'
 import type { Dashboard, Priority, Status, Category } from '@/lib/types'
 
@@ -65,15 +66,8 @@ function App() {
     clearFilters,
   } = useDashboardFilters(dashboards)
 
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [viewerOpen, setViewerOpen] = useState(false)
-  const [suggestionsOpen, setSuggestionsOpen] = useState(false)
-  const [exportOpen, setExportOpen] = useState(false)
-  const [importOpen, setImportOpen] = useState(false)
-  const [templatesOpen, setTemplatesOpen] = useState(false)
-  const [analyticsOpen, setAnalyticsOpen] = useState(false)
-  const [bulkTagOpen, setBulkTagOpen] = useState(false)
-  const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const { dialogs, openDialog, setDialogState } = useDialogState()
+
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
   const [viewingDashboard, setViewingDashboard] = useState<Dashboard | null>(null)
 
@@ -89,7 +83,7 @@ function App() {
     }
   }, [searchQuery, filterPriority, filterStatus, filterCategory, filterTags])
 
-  const handleAddClick = () => {
+  const handleAddClick = useCallback(() => {
     if (!canAddDashboard) {
       toast.error('Maximum limit reached', {
         description: `You can only have up to ${MAX_DASHBOARDS} dashboards.`,
@@ -97,103 +91,21 @@ function App() {
       return
     }
     setEditingDashboard(null)
-    setDialogOpen(true)
-  }
+    openDialog('dashboard')
+  }, [canAddDashboard, openDialog])
 
-  const shortcuts = useMemo<KeyboardShortcut[]>(() => [
-    {
-      key: 'n',
-      ctrl: true,
-      action: handleAddClick,
-      description: 'Add new dashboard',
-    },
-    {
-      key: 'k',
-      ctrl: true,
-      action: () => document.querySelector<HTMLInputElement>('input[type="search"]')?.focus(),
-      description: 'Focus search',
-    },
-    {
-      key: 'b',
-      ctrl: true,
-      action: () => {
-        if (dashboards.length > 0) {
-          setBulkTagOpen(true)
-        } else {
-          toast.error('No dashboards to tag')
-        }
-      },
-      description: 'Open bulk tag dialog',
-    },
-    {
-      key: 't',
-      ctrl: true,
-      action: () => setTemplatesOpen(true),
-      description: 'Open templates',
-    },
-    {
-      key: 's',
-      ctrl: true,
-      action: () => setSuggestionsOpen(true),
-      description: 'Open suggestions',
-    },
-    {
-      key: 'e',
-      ctrl: true,
-      action: () => {
-        if (dashboards.length > 0) {
-          setExportOpen(true)
-        } else {
-          toast.error('No dashboards to export')
-        }
-      },
-      description: 'Export dashboards',
-    },
-    {
-      key: 'i',
-      ctrl: true,
-      action: () => setImportOpen(true),
-      description: 'Import dashboards',
-    },
-    {
-      key: 'a',
-      ctrl: true,
-      action: () => setAnalyticsOpen(true),
-      description: 'View analytics',
-    },
-    {
-      key: 'Escape',
-      action: () => {
-        if (hasActiveFilters) {
-          clearFilters()
-          toast.success('Filters cleared')
-        }
-      },
-      description: 'Clear all filters',
-    },
-    {
-      key: '/',
-      action: () => {
-        setShortcutsOpen(true)
-      },
-      description: 'Show keyboard shortcuts',
-    },
-  ], [dashboards.length, hasActiveFilters, clearFilters])
-
-  useKeyboardShortcuts(shortcuts)
-
-  const handleViewClick = (dashboard: Dashboard) => {
+  const handleViewClick = useCallback((dashboard: Dashboard) => {
     trackEvent('dashboard_viewed', dashboard.id)
     setViewingDashboard(dashboard)
-    setViewerOpen(true)
-  }
+    openDialog('viewer')
+  }, [trackEvent, openDialog])
 
-  const handleEditClick = (dashboard: Dashboard) => {
+  const handleEditClick = useCallback((dashboard: Dashboard) => {
     setEditingDashboard(dashboard)
-    setDialogOpen(true)
-  }
+    openDialog('dashboard')
+  }, [openDialog])
 
-  const handleSave = (dashboardData: Omit<Dashboard, 'id' | 'createdAt'>) => {
+  const handleSave = useCallback((dashboardData: Omit<Dashboard, 'id' | 'createdAt'>) => {
     if (editingDashboard) {
       const oldStatus = editingDashboard.status
       const oldPriority = editingDashboard.priority
@@ -220,60 +132,146 @@ function App() {
         trackEvent('dashboard_created', undefined, dashboardData)
       }
     }
-    setDialogOpen(false)
-  }
+    setDialogState('dashboard', false)
+  }, [editingDashboard, updateDashboard, addDashboard, trackEvent, setDialogState])
 
-  const handleDelete = (id: string) => {
+  const handleDelete = useCallback((id: string) => {
     deleteDashboard(id)
     trackEvent('dashboard_deleted', id)
-  }
+  }, [deleteDashboard, trackEvent])
 
-  const handleAddFromSuggestion = (suggestion: Omit<Dashboard, 'id' | 'createdAt' | 'status'> & { status?: Status }) => {
+  const handleAddFromSuggestion = useCallback((
+    suggestion: Omit<Dashboard, 'id' | 'createdAt' | 'status'> & { status?: Status }
+  ) => {
     if (addFromSuggestion(suggestion)) {
       trackEvent('suggestion_accepted', undefined, suggestion)
-      setSuggestionsOpen(false)
+      setDialogState('suggestions', false)
     }
-  }
+  }, [addFromSuggestion, trackEvent, setDialogState])
 
-  const handleAddTemplate = (template: any) => {
+  const handleAddTemplate = useCallback((template: any) => {
     if (addFromTemplate(template)) {
       trackEvent('template_used', undefined, { templateTitle: template.title })
-      setTemplatesOpen(false)
+      setDialogState('templates', false)
     }
-  }
+  }, [addFromTemplate, trackEvent, setDialogState])
 
-  const handleImport = (importedDashboards: Dashboard[]) => {
+  const handleImport = useCallback((importedDashboards: Dashboard[]) => {
     importDashboards(importedDashboards)
     trackEvent('import_completed', undefined, { count: importedDashboards.length })
-  }
+  }, [importDashboards, trackEvent])
 
-  const handleExport = () => {
+  const handleExport = useCallback(() => {
     trackEvent('export_completed', undefined, { count: dashboards.length })
-  }
+  }, [trackEvent, dashboards.length])
 
-  const handleClearAnalytics = () => {
+  const handleClearAnalytics = useCallback(() => {
     if (confirm('Are you sure you want to clear all analytics data? This cannot be undone.')) {
       clearAnalytics()
       toast.success('Analytics data cleared')
-      setAnalyticsOpen(false)
+      setDialogState('analytics', false)
     }
-  }
+  }, [clearAnalytics, setDialogState])
 
-  const handleBulkTags = (dashboardIds: string[], tagsToAdd: string[], tagsToRemove: string[]) => {
+  const handleBulkTags = useCallback((
+    dashboardIds: string[], 
+    tagsToAdd: string[], 
+    tagsToRemove: string[]
+  ) => {
     applyBulkTags(dashboardIds, tagsToAdd, tagsToRemove)
     trackEvent('bulk_tags_applied', undefined, {
       dashboardCount: dashboardIds.length,
       tagsAdded: tagsToAdd.length,
       tagsRemoved: tagsToRemove.length
     })
-  }
+  }, [applyBulkTags, trackEvent])
+
+  const shortcuts = useMemo<KeyboardShortcut[]>(() => [
+    {
+      key: 'n',
+      ctrl: true,
+      action: handleAddClick,
+      description: 'Add new dashboard',
+    },
+    {
+      key: 'k',
+      ctrl: true,
+      action: () => document.querySelector<HTMLInputElement>('input[type="search"]')?.focus(),
+      description: 'Focus search',
+    },
+    {
+      key: 'b',
+      ctrl: true,
+      action: () => {
+        if (dashboards.length > 0) {
+          openDialog('bulkTag')
+        } else {
+          toast.error('No dashboards to tag')
+        }
+      },
+      description: 'Open bulk tag dialog',
+    },
+    {
+      key: 't',
+      ctrl: true,
+      action: () => openDialog('templates'),
+      description: 'Open templates',
+    },
+    {
+      key: 's',
+      ctrl: true,
+      action: () => openDialog('suggestions'),
+      description: 'Open suggestions',
+    },
+    {
+      key: 'e',
+      ctrl: true,
+      action: () => {
+        if (dashboards.length > 0) {
+          openDialog('export')
+        } else {
+          toast.error('No dashboards to export')
+        }
+      },
+      description: 'Export dashboards',
+    },
+    {
+      key: 'i',
+      ctrl: true,
+      action: () => openDialog('import'),
+      description: 'Import dashboards',
+    },
+    {
+      key: 'a',
+      ctrl: true,
+      action: () => openDialog('analytics'),
+      description: 'View analytics',
+    },
+    {
+      key: 'Escape',
+      action: () => {
+        if (hasActiveFilters) {
+          clearFilters()
+          toast.success('Filters cleared')
+        }
+      },
+      description: 'Clear all filters',
+    },
+    {
+      key: '/',
+      action: () => openDialog('shortcuts'),
+      description: 'Show keyboard shortcuts',
+    },
+  ], [dashboards.length, hasActiveFilters, clearFilters, handleAddClick, openDialog])
+
+  useKeyboardShortcuts(shortcuts)
 
   const remainingSlots = MAX_DASHBOARDS - dashboards.length
 
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       <Toaster position="top-center" />
-      <KeyboardShortcutHint onOpenShortcuts={() => setShortcutsOpen(true)} />
+      <KeyboardShortcutHint onOpenShortcuts={() => openDialog('shortcuts')} />
       
       <div className="flex-shrink-0 border-b border-border bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
@@ -288,13 +286,13 @@ function App() {
             </div>
             <DashboardToolbar
               onAdd={handleAddClick}
-              onTemplates={() => setTemplatesOpen(true)}
-              onSuggestions={() => setSuggestionsOpen(true)}
-              onBulkTags={() => setBulkTagOpen(true)}
-              onImport={() => setImportOpen(true)}
-              onExport={() => setExportOpen(true)}
-              onAnalytics={() => setAnalyticsOpen(true)}
-              onKeyboardShortcuts={() => setShortcutsOpen(true)}
+              onTemplates={() => openDialog('templates')}
+              onSuggestions={() => openDialog('suggestions')}
+              onBulkTags={() => openDialog('bulkTag')}
+              onImport={() => openDialog('import')}
+              onExport={() => openDialog('export')}
+              onAnalytics={() => openDialog('analytics')}
+              onKeyboardShortcuts={() => openDialog('shortcuts')}
               canAdd={canAddDashboard}
               canExport={dashboards.length > 0}
               hasDashboards={dashboards.length > 0}
@@ -331,7 +329,7 @@ function App() {
           {filteredDashboards.length === 0 ? (
             <EmptyState 
               onAddClick={handleAddClick} 
-              onTemplatesClick={() => setTemplatesOpen(true)}
+              onTemplatesClick={() => openDialog('templates')}
               isFiltered={hasActiveFilters} 
             />
           ) : (
@@ -351,51 +349,51 @@ function App() {
       </div>
 
       <DashboardDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        open={dialogs.dashboard}
+        onOpenChange={(open) => setDialogState('dashboard', open)}
         onSave={handleSave}
         editingDashboard={editingDashboard}
       />
 
       <DashboardViewer
-        open={viewerOpen}
-        onOpenChange={setViewerOpen}
+        open={dialogs.viewer}
+        onOpenChange={(open) => setDialogState('viewer', open)}
         dashboard={viewingDashboard}
         onEdit={handleEditClick}
       />
 
       <SuggestionsDialog
-        open={suggestionsOpen}
-        onOpenChange={setSuggestionsOpen}
+        open={dialogs.suggestions}
+        onOpenChange={(open) => setDialogState('suggestions', open)}
         onAddSuggestion={handleAddFromSuggestion}
         existingDashboards={dashboards}
       />
 
       <ExportDialog
-        open={exportOpen}
-        onOpenChange={setExportOpen}
+        open={dialogs.export}
+        onOpenChange={(open) => setDialogState('export', open)}
         dashboards={dashboards}
         onExport={handleExport}
       />
 
       <ImportDialog
-        open={importOpen}
-        onOpenChange={setImportOpen}
+        open={dialogs.import}
+        onOpenChange={(open) => setDialogState('import', open)}
         onImport={handleImport}
         currentCount={dashboards.length}
         maxCount={MAX_DASHBOARDS}
       />
 
       <TemplatesDialog
-        open={templatesOpen}
-        onOpenChange={setTemplatesOpen}
+        open={dialogs.templates}
+        onOpenChange={(open) => setDialogState('templates', open)}
         onAddTemplate={handleAddTemplate}
         existingDashboards={dashboards}
       />
 
       <AnalyticsDialog
-        open={analyticsOpen}
-        onOpenChange={setAnalyticsOpen}
+        open={dialogs.analytics}
+        onOpenChange={(open) => setDialogState('analytics', open)}
         analytics={overallAnalytics}
         usageStats={usageStats}
         dashboards={dashboards}
@@ -404,15 +402,15 @@ function App() {
       />
 
       <BulkTagDialog
-        open={bulkTagOpen}
-        onOpenChange={setBulkTagOpen}
+        open={dialogs.bulkTag}
+        onOpenChange={(open) => setDialogState('bulkTag', open)}
         dashboards={dashboards}
         onApplyBulkTags={handleBulkTags}
       />
 
       <KeyboardShortcutsDialog
-        open={shortcutsOpen}
-        onOpenChange={setShortcutsOpen}
+        open={dialogs.shortcuts}
+        onOpenChange={(open) => setDialogState('shortcuts', open)}
         shortcuts={shortcuts}
       />
     </div>
