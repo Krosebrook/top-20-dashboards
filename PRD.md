@@ -3,7 +3,8 @@
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
 **Recent Updates:**
-- **Keyboard Shortcuts (Current)**: Added comprehensive keyboard shortcuts for all common actions including add dashboard (Ctrl+N), search focus (Ctrl+K), bulk tags (Ctrl+B), templates (Ctrl+T), suggestions (Ctrl+S), export (Ctrl+E), import (Ctrl+I), analytics (Ctrl+A), clear filters (Esc), and help dialog (/). Added keyboard shortcuts dialog with categorized shortcuts and visual key indicators. Added keyboard icon button in toolbar for quick access to shortcuts reference.
+- **Dashboard Viewer (Current)**: Added comprehensive dashboard viewer dialog that allows users to actually view and interact with their dashboards. Features include tabbed interface with Overview, Details, Activity, and Notes sections; quick edit access from viewer; visual presentation of dashboard metadata with cards and badges; keyboard shortcut hints; smooth animations and transitions
+- **Keyboard Shortcuts**: Added comprehensive keyboard shortcuts for all common actions including add dashboard (Ctrl+N), search focus (Ctrl+K), bulk tags (Ctrl+B), templates (Ctrl+T), suggestions (Ctrl+S), export (Ctrl+E), import (Ctrl+I), analytics (Ctrl+A), clear filters (Esc), and help dialog (/). Added keyboard shortcuts dialog with categorized shortcuts and visual key indicators. Added keyboard icon button in toolbar for quick access to shortcuts reference.
 - **Bulk Tag Operations**: Added bulk tag management dialog for applying tag changes to multiple dashboards simultaneously, including selection interface with search, add/remove tag operations, common tag detection, and quick tag suggestions
 - **Custom Tags & Advanced Filtering**: Added custom tagging system with tag input component, tag-based filtering with visual tag selector, advanced filtering options including multi-field sorting (title, date, priority, status, category), display filters (show only dashboards with tags), and comprehensive filter management
 - **Analytics & Usage Tracking**: Added comprehensive analytics system to track dashboard interactions, usage patterns, and provide insights into user behavior
@@ -20,11 +21,11 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 ## Essential Features
 
 ### Dashboard List View
-- **Functionality**: Display all 20 dashboards in a organized grid/list with key information (title, description, priority, category, status)
-- **Purpose**: Provides at-a-glance overview of all needed dashboards
+- **Functionality**: Display all 20 dashboards in a organized grid/list with key information (title, description, priority, category, status); cards include "View Dashboard" button for detailed viewing
+- **Purpose**: Provides at-a-glance overview of all needed dashboards with quick access to full details
 - **Trigger**: Initial page load
-- **Progression**: User lands on page → Sees dashboard cards → Can scan titles and details → Identifies items of interest
-- **Success criteria**: All dashboards visible, readable, and organized logically
+- **Progression**: User lands on page → Sees dashboard cards → Can scan titles and details → Clicks "View Dashboard" button or eye icon → Opens detailed viewer
+- **Success criteria**: All dashboards visible, readable, organized logically, and viewable in detail
 
 ### Add/Edit Dashboard
 - **Functionality**: Create new dashboard entries or modify existing ones with fields for name, description, category, priority level, and implementation status
@@ -74,6 +75,13 @@ A comprehensive dashboard management system that helps users organize, prioritiz
 - **Trigger**: Click "Analytics" button in toolbar; tracking happens automatically on all interactions
 - **Progression**: User clicks analytics → Dialog opens with three tabs (Overview, Usage Details, Activity Log) → User views statistics, trends, top dashboards → Can clear analytics if needed
 - **Success criteria**: All interactions are tracked persistently, analytics provide actionable insights, visualizations are clear and meaningful, no performance impact on main app
+
+### Dashboard Viewer
+- **Functionality**: Dedicated viewer dialog for viewing complete dashboard details with tabbed interface (Overview, Details, Activity, Notes); displays all dashboard metadata, tags, creation dates; provides quick edit access; shows visual cards for status and category information
+- **Purpose**: Allow users to see and interact with their dashboards in detail without editing mode clutter; provide context for dashboard decisions and planning
+- **Trigger**: Click "View Dashboard" button on card, or click eye icon in card header
+- **Progression**: User clicks view → Viewer dialog opens → Default Overview tab shows description, status cards, and tags → User can switch to Details tab for full metadata → Can click Edit button to modify dashboard → Close viewer to return to list
+- **Success criteria**: Viewer shows all dashboard information clearly, tabs navigate smoothly, edit transition is seamless, viewer tracks as view event in analytics, mobile-responsive layout
 
 ### Keyboard Shortcuts
 - **Functionality**: Comprehensive keyboard shortcuts for all common actions; shortcuts help dialog with categorized list and visual key indicators; shortcuts work globally across the app; smart input detection prevents conflicts with text fields
@@ -156,6 +164,7 @@ Animations should be subtle and purposeful, reinforcing interactions without slo
   - Plus (add new dashboard)
   - PencilSimple (edit)
   - Trash (delete)
+  - Eye (view dashboard)
   - FunnelSimple (filter)
   - MagnifyingGlass (search)
   - Circle/CheckCircle (status indicators)
@@ -168,11 +177,13 @@ Animations should be subtle and purposeful, reinforcing interactions without slo
   - Warning (validation alerts)
   - TrendUp (analytics trends)
   - Activity (activity indicators)
-  - Eye (view tracking)
   - Clock (time-based stats)
   - Calendar (date information)
   - Keyboard (keyboard shortcuts)
   - Tag (tags and bulk operations)
+  - Notepad (notes and descriptions)
+  - ListChecks (checklist and tasks)
+  - ClockCounterClockwise (activity history)
   
 - **Spacing**: 
   - Container padding: p-6 on desktop, p-4 on mobile

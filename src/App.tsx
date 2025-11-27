@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DashboardCard } from '@/components/DashboardCard'
 import { DashboardDialog } from '@/components/DashboardDialog'
+import { DashboardViewer } from '@/components/DashboardViewer'
 import { DashboardFilters } from '@/components/DashboardFilters'
 import { DashboardToolbar } from '@/components/DashboardToolbar'
 import { SuggestionsDialog } from '@/components/SuggestionsDialog'
@@ -65,6 +66,7 @@ function App() {
   } = useDashboardFilters(dashboards)
 
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [viewerOpen, setViewerOpen] = useState(false)
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
   const [exportOpen, setExportOpen] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
@@ -73,6 +75,7 @@ function App() {
   const [bulkTagOpen, setBulkTagOpen] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [editingDashboard, setEditingDashboard] = useState<Dashboard | null>(null)
+  const [viewingDashboard, setViewingDashboard] = useState<Dashboard | null>(null)
 
   useEffect(() => {
     if (hasActiveFilters) {
@@ -179,8 +182,13 @@ function App() {
 
   useKeyboardShortcuts(shortcuts)
 
-  const handleEditClick = (dashboard: Dashboard) => {
+  const handleViewClick = (dashboard: Dashboard) => {
     trackEvent('dashboard_viewed', dashboard.id)
+    setViewingDashboard(dashboard)
+    setViewerOpen(true)
+  }
+
+  const handleEditClick = (dashboard: Dashboard) => {
     setEditingDashboard(dashboard)
     setDialogOpen(true)
   }
@@ -332,6 +340,7 @@ function App() {
                 <DashboardCard
                   key={dashboard.id}
                   dashboard={dashboard}
+                  onView={handleViewClick}
                   onEdit={handleEditClick}
                   onDelete={handleDelete}
                 />
@@ -346,6 +355,13 @@ function App() {
         onOpenChange={setDialogOpen}
         onSave={handleSave}
         editingDashboard={editingDashboard}
+      />
+
+      <DashboardViewer
+        open={viewerOpen}
+        onOpenChange={setViewerOpen}
+        dashboard={viewingDashboard}
+        onEdit={handleEditClick}
       />
 
       <SuggestionsDialog

@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { PencilSimple, Trash, Tag } from '@phosphor-icons/react'
+import { PencilSimple, Trash, Tag, Eye } from '@phosphor-icons/react'
 import type { Dashboard } from '@/lib/types'
 import { PRIORITY_CONFIG, STATUS_CONFIG, CATEGORY_CONFIG } from '@/lib/constants'
 import { motion } from 'framer-motion'
@@ -10,9 +10,10 @@ interface DashboardCardProps {
   dashboard: Dashboard
   onEdit: (dashboard: Dashboard) => void
   onDelete: (id: string) => void
+  onView: (dashboard: Dashboard) => void
 }
 
-export function DashboardCard({ dashboard, onEdit, onDelete }: DashboardCardProps) {
+export function DashboardCard({ dashboard, onEdit, onDelete, onView }: DashboardCardProps) {
   return (
     <motion.div
       layout
@@ -30,8 +31,18 @@ export function DashboardCard({ dashboard, onEdit, onDelete }: DashboardCardProp
             <Button
               variant="ghost"
               size="icon"
+              className="h-8 w-8 text-muted-foreground hover:text-primary"
+              onClick={() => onView(dashboard)}
+              title="View dashboard"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               className="h-8 w-8 text-muted-foreground hover:text-foreground"
               onClick={() => onEdit(dashboard)}
+              title="Edit dashboard"
             >
               <PencilSimple className="h-4 w-4" />
             </Button>
@@ -40,6 +51,7 @@ export function DashboardCard({ dashboard, onEdit, onDelete }: DashboardCardProp
               size="icon"
               className="h-8 w-8 text-muted-foreground hover:text-destructive"
               onClick={() => onDelete(dashboard.id)}
+              title="Delete dashboard"
             >
               <Trash className="h-4 w-4" />
             </Button>
@@ -49,6 +61,16 @@ export function DashboardCard({ dashboard, onEdit, onDelete }: DashboardCardProp
         <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
           {dashboard.description}
         </p>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full mb-3 gap-2"
+          onClick={() => onView(dashboard)}
+        >
+          <Eye className="h-4 w-4" />
+          View Dashboard
+        </Button>
 
         <div className="flex flex-wrap gap-2 mb-3">
           <Badge variant="outline" className={PRIORITY_CONFIG[dashboard.priority].className}>
