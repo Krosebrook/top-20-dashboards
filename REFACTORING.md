@@ -1,4 +1,6 @@
-# Codebase Refactoring Summary
+# Codebase Refactoring - Detailed Documentation
+
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Architecture](./ARCHITECTURE.md) | [Quick Summary](./REFACTORING-SUMMARY.md)
 
 ## Overview
 This refactoring improves code organization, maintainability, type safety, and performance across the Dashboard Manager application.

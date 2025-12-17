@@ -1,5 +1,7 @@
 # Keyboard Shortcuts
 
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Features](./FEATURES-SUMMARY.md) | [Contributing](./CONTRIBUTING.md)
+
 This document describes the keyboard shortcuts feature implemented in the Dashboard Manager application.
 
 ## Overview

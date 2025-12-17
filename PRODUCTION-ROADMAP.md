@@ -1,4 +1,7 @@
 # Production Roadmap: Dashboard Manager
+
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Architecture](./ARCHITECTURE.md) | [Features](./FEATURES-SUMMARY.md)
+
 ## High-Level Audit & User Persona Analysis
 
 ---
