@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-Open your browser to the URL shown in the terminal (typically `http://localhost:5173`)
+Open your browser to the URL shown in the terminal (usually starting with `http://localhost`)
 
 ### 2. Create Your First Dashboard
 

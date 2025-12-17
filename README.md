@@ -73,7 +73,7 @@ For a complete feature list, see [FEATURES-SUMMARY.md](./FEATURES-SUMMARY.md) or
    ```
 
 4. **Open your browser**
-   Navigate to the URL shown in the terminal (typically `http://localhost:5173`)
+   Navigate to the URL shown in the terminal (usually starting with `http://localhost`)
 
 ### Build for Production
 
