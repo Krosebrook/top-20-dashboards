@@ -46,7 +46,7 @@ Dashboard Manager is a modern, feature-rich application designed to help users m
 - ⌨️ **Keyboard Shortcuts** - Fast access to all features with comprehensive shortcuts
 - 📱 **Mobile Responsive** - Fully responsive design for all screen sizes
 
-For a complete feature list, see [FEATURES-SUMMARY.md](./FEATURES-SUMMARY.md).
+For a complete feature list, see [FEATURES-SUMMARY.md](./FEATURES-SUMMARY.md) or the [FEATURES-MATRIX.md](./FEATURES-MATRIX.md) for a quick reference table.
 
 ## 🚀 Getting Started
 

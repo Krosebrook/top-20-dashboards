@@ -12,6 +12,7 @@ Welcome to the Dashboard Manager documentation! This page helps you find the rig
 → **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Development setup, coding standards, and PR process
 
 ## 🎯 I want to know what features are available
+→ **[FEATURES-MATRIX.md](./FEATURES-MATRIX.md)** - Quick reference table of all features
 → **[FEATURES-SUMMARY.md](./FEATURES-SUMMARY.md)** - Complete feature list with details
 → **[KEYBOARD-SHORTCUTS.md](./KEYBOARD-SHORTCUTS.md)** - All keyboard shortcuts
 
