@@ -73,7 +73,7 @@ For a complete feature list, see [FEATURES-SUMMARY.md](./FEATURES-SUMMARY.md).
    ```
 
 4. **Open your browser**
-   Navigate to `http://localhost:5000` (or the port shown in the terminal)
+   Navigate to the URL shown in the terminal (typically `http://localhost:5173`)
 
 ### Build for Production
 
@@ -91,13 +91,23 @@ npm run preview
 
 Comprehensive documentation is available in the following files:
 
+### Getting Started
+- **[QUICK-START.md](./QUICK-START.md)** - 5-minute quick start guide for new users
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute to the project
+
+### Product & Features
 - **[PRD.md](./PRD.md)** - Product Requirements Document with complete feature specifications
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Code architecture and design patterns
 - **[FEATURES-SUMMARY.md](./FEATURES-SUMMARY.md)** - Detailed feature descriptions
 - **[KEYBOARD-SHORTCUTS.md](./KEYBOARD-SHORTCUTS.md)** - Complete keyboard shortcuts guide
 - **[ANALYTICS-FEATURE.md](./ANALYTICS-FEATURE.md)** - Analytics and usage tracking documentation
+
+### Technical Documentation
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Code architecture and design patterns
 - **[REFACTORING.md](./REFACTORING.md)** - Codebase refactoring details
 - **[REFACTORING-SUMMARY.md](./REFACTORING-SUMMARY.md)** - Quick reference for refactoring changes
+
+### Project Management
+- **[CHANGELOG.md](./CHANGELOG.md)** - Project change history
 - **[PRODUCTION-ROADMAP.md](./PRODUCTION-ROADMAP.md)** - Future roadmap and enhancement plans
 - **[SECURITY.md](./SECURITY.md)** - Security policy and reporting guidelines
 

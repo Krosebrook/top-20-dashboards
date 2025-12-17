@@ -1,8 +1,23 @@
 {
-    "name": "spark-template",
+    "name": "dashboard-manager",
+    "version": "1.0.0",
+    "description": "A comprehensive dashboard management application for organizing and tracking your top 20 dashboards",
     "private": true,
-    "version": "0.0.0",
     "type": "module",
+    "author": "GitHub, Inc.",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Krosebrook/top-20-dashboards.git"
+    },
+    "keywords": [
+        "dashboard",
+        "management",
+        "tracking",
+        "analytics",
+        "organization",
+        "productivity"
+    ],
     "scripts": {
         "dev": "vite",
         "kill": "fuser -k 5000/tcp",
