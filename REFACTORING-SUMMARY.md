@@ -1,5 +1,7 @@
 # Refactoring Summary - Quick Reference
 
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Architecture](./ARCHITECTURE.md) | [Full Refactoring Details](./REFACTORING.md)
+
 ## What Changed?
 
 ### ✅ New Files Created (5)

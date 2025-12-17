@@ -1,4 +1,6 @@
-# Planning Guide
+# Product Requirements Document (PRD)
+
+> **Navigation:** [README](./README.md) | [Architecture](./ARCHITECTURE.md) | [Features](./FEATURES-SUMMARY.md) | [Contributing](./CONTRIBUTING.md)
 
 A comprehensive dashboard management system that helps users organize, prioritize, and track the top 20 dashboards they need for their work or personal projects.
 
