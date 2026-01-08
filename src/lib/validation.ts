@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import type { Dashboard } from './types'
-import type { Dashboard } from './types'
+import { VALID_CATEGORIES, VALID_PRIORITIES, VALID_STATUSES, MAX_DASHBOARDS } from './constants'
 
 export const DashboardSchema = z.object({
   id: z.string(),
@@ -19,6 +19,10 @@ export function canAddDashboard(currentCount: number): boolean {
   return currentCount < MAX_DASHBOARDS
 }
 
+export function getAvailableSlots(currentCount: number): number {
+  return Math.max(0, MAX_DASHBOARDS - currentCount)
+}
+
 export function validateDashboard(dashboard: unknown): dashboard is Dashboard {
   try {
     DashboardSchema.parse(dashboard)
@@ -30,11 +34,14 @@ export function validateDashboard(dashboard: unknown): dashboard is Dashboard {
 
 export function validateDashboards(dashboards: Dashboard[]): Dashboard[] {
   return dashboards.filter(dashboard => {
-
+    try {
       DashboardSchema.parse(dashboard)
-
-
-
+      return true
+    } catch {
+      return false
+    }
+  })
+}
 
 
 
