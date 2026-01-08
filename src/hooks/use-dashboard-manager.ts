@@ -3,7 +3,7 @@ import { useEffect, useCallback } from 'react'
 import { toast } from 'sonner'
 import type { Dashboard, Status } from '@/lib/types'
 import { createDashboard, updateDashboard } from '@/lib/dashboard-utils'
-import { canAddDashboard, getAvailableSlots, validateDashboards } from '@/lib/validation'
+import { canAddDashboard, getAvailableSlots, validateDashboard } from '@/lib/validation'
 import { MAX_DASHBOARDS } from '@/lib/constants'
 import type { DashboardTemplate } from '@/lib/dashboard-templates'
 
@@ -83,7 +83,7 @@ export function useDashboardManager() {
   const importDashboards = useCallback((importedDashboards: Dashboard[]) => {
     const currentDashboards = dashboards || []
     const availableSlots = getAvailableSlots(currentDashboards.length)
-    const validDashboards = validateDashboards(importedDashboards)
+    const validDashboards = importedDashboards.filter(validateDashboard)
     const toImport = validDashboards.slice(0, availableSlots)
 
     if (toImport.length === 0) {

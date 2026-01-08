@@ -29,15 +29,7 @@ export function validateDashboard(dashboard: unknown): dashboard is Dashboard {
     return true
   } catch {
     return false
-}
-    try {
-    try {
-      return true
-    } catch {
-      return false
-    }
-  })
-} })
+  }
 }
 
 
