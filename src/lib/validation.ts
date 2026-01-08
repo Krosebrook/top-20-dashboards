@@ -29,19 +29,15 @@ export function validateDashboard(dashboard: unknown): dashboard is Dashboard {
     return true
   } catch {
     return false
-  }
 }
-
-export function validateDashboards(dashboards: Dashboard[]): Dashboard[] {
-  return dashboards.filter(dashboard => {
     try {
-      DashboardSchema.parse(dashboard)
+    try {
       return true
     } catch {
       return false
     }
   })
+} })
 }
-
 
 
