@@ -1,5 +1,7 @@
 # Dashboard Manager - Code Architecture
 
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Features](./FEATURES-SUMMARY.md) | [Contributing](./CONTRIBUTING.md)
+
 ## Overview
 This document describes the architecture and code organization of the Dashboard Manager application.
 

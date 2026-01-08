@@ -1,5 +1,7 @@
 # Analytics & Usage Tracking Feature
 
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Features](./FEATURES-SUMMARY.md) | [Contributing](./CONTRIBUTING.md)
+
 ## Overview
 Comprehensive analytics and usage tracking system that monitors all dashboard interactions and provides actionable insights into user behavior.
 

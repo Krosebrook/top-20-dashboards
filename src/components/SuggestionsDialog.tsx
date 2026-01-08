@@ -51,10 +51,13 @@ Requirements:
    - 3-4 unexpected/innovative use cases (things users haven't thought of)
    - 3-4 modern dashboard styles and functionality enhancements
    - 2-3 practical but underrated dashboards
+   - AT LEAST ONE comprehensive Product Roadmap Dashboard with maximum depth and detail
 
 3. Focus on creativity: personal productivity, wellness tracking, learning metrics, habit formation, decision-making tools, time optimization, relationship management, creative project tracking, mental models, skill development, knowledge management, etc.
 
-4. Each suggestion needs:
+4. IMPORTANT: When suggesting a Product Roadmap Dashboard, include maximum depth covering: feature releases, roadmap progress, development status, planned vs. actual delivery, milestones, dependencies, stakeholder communication, and strategic alignment.
+
+5. Each suggestion needs:
    - title: Clear, descriptive name (under 60 chars)
    - description: Compelling value proposition (80-120 chars)
    - category: One of [analytics, sales, marketing, operations, finance, hr, product, customer, other]

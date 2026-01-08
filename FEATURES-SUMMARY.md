@@ -1,5 +1,7 @@
 # Dashboard Manager - Features Summary
 
+> **Navigation:** [README](./README.md) | [PRD](./PRD.md) | [Architecture](./ARCHITECTURE.md) | [Contributing](./CONTRIBUTING.md)
+
 ## Custom Tags Feature ✅
 
 ### Tag Input Component (`TagInput.tsx`)
