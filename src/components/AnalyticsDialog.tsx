@@ -12,7 +12,7 @@ import {
   CircleDashed,
   Warning,
   Pause,
-  Activity,
+  Pulse,
   Calendar,
   Eye,
   PencilSimple,
@@ -122,7 +122,7 @@ export function AnalyticsDialog({
                       <p className="text-sm text-muted-foreground mb-1">Total Events</p>
                       <p className="text-3xl font-bold">{analytics.totalEvents}</p>
                     </div>
-                    <Activity className="h-8 w-8 text-secondary" />
+                    <Pulse className="h-8 w-8 text-secondary" />
                   </div>
                 </Card>
 
@@ -140,7 +140,7 @@ export function AnalyticsDialog({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <Card className="p-4">
                   <h3 className="font-semibold mb-4 flex items-center gap-2">
-                    <Activity className="h-4 w-4" />
+                    <Pulse className="h-4 w-4" />
                     Status Distribution
                   </h3>
                   <div className="space-y-3">
@@ -298,7 +298,7 @@ export function AnalyticsDialog({
                           </div>
                           <div>
                             <p className="text-muted-foreground flex items-center gap-1">
-                              <Activity className="h-3 w-3" />
+                              <Pulse className="h-3 w-3" />
                               Status Changes
                             </p>
                             <p className="font-medium">{stats.statusChanges}</p>
@@ -362,7 +362,7 @@ export function AnalyticsDialog({
               <div className="space-y-2">
                 {recentActivity.length === 0 ? (
                   <Card className="p-8 text-center">
-                    <Activity className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
+                    <Pulse className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
                     <p className="text-muted-foreground">No activity recorded yet</p>
                   </Card>
                 ) : (
@@ -390,11 +390,11 @@ export function AnalyticsDialog({
                       },
                       'status_changed': { 
                         label: 'Changed status', 
-                        icon: <Activity className="h-4 w-4 text-secondary" /> 
+                        icon: <Pulse className="h-4 w-4 text-secondary" /> 
                       },
                       'filter_applied': { 
                         label: 'Applied filter', 
-                        icon: <Activity className="h-4 w-4 text-muted-foreground" /> 
+                        icon: <Pulse className="h-4 w-4 text-muted-foreground" /> 
                       },
                       'export_completed': { 
                         label: 'Exported data', 
@@ -412,7 +412,7 @@ export function AnalyticsDialog({
 
                     const eventInfo = eventLabels[event.type] || { 
                       label: event.type, 
-                      icon: <Activity className="h-4 w-4" /> 
+                      icon: <Pulse className="h-4 w-4" /> 
                     }
 
                     return (
