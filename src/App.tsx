@@ -81,7 +81,7 @@ function App() {
         filterTags,
       })
     }
-  }, [searchQuery, filterPriority, filterStatus, filterCategory, filterTags])
+  }, [searchQuery, filterPriority, filterStatus, filterCategory, filterTags, hasActiveFilters, trackEvent])
 
   const handleAddClick = useCallback(() => {
     if (!canAddDashboard) {
