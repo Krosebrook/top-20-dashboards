@@ -2,10 +2,10 @@ import type { DashboardTemplate } from './dashboard-templates'
 
 export const freshserviceTemplates: DashboardTemplate[] = [
   {
-    title: 'IT Service Desk Performance Dashboard',
-    description: 'Monitor ticket volumes, response times, resolution rates, SLA compliance, and agent productivity across the IT service desk.',
     category: 'operations',
-    priority: 'critical',
+    templateCategory: 'freshservice-it',
+      {
+        description: 'Per
     templateCategory: 'freshservice-it',
     kpis: [
       {
@@ -14,27 +14,27 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         target: '> 95%',
         formula: '(Resolved Tickets / Total Tickets) × 100',
         category: 'performance'
-      },
+        
       {
-        name: 'First Contact Resolution (FCR)',
-        description: 'Percentage of tickets resolved on first contact',
-        target: '> 70%',
-        formula: '(Tickets Resolved on First Contact / Total Tickets) × 100',
-        category: 'quality'
-      },
-      {
-        name: 'Average Resolution Time',
-        description: 'Mean time to resolve tickets',
-        target: '< 24 hours',
+        description: 'Mean time to resolve tick
         formula: 'Sum(Resolution Time) / Total Tickets',
-        category: 'performance'
       },
-      {
         name: 'Customer Satisfaction Score (CSAT)',
-        description: 'Average customer satisfaction rating',
         target: '> 4.5/5',
-        formula: 'Average(Customer Ratings)',
-        category: 'satisfaction'
+        
+    ],
+      {
+        description: 'Count of all tickets submitted
+      },
+        name: 'Reopened Tickets',
+        category: 'quality'
+      {
+       
+      },
+        name: 'SLA Compliance Rate',
+        category: 'operati
+    ]
+  {
       }
     ],
     metrics: [
@@ -131,17 +131,17 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         description: 'Percentage of compliant software licenses',
         target: '100%',
         formula: '(Compliant Licenses / Total Licenses) × 100',
-        category: 'quality'
+        category: 'compliance'
       },
       {
-        name: 'Asset Refresh Rate',
-        description: 'Percentage of assets refreshed on schedule',
-        target: '> 90%',
+      {
+        description: 'Assets approaching end of life',
+      },
         formula: '(Refreshed Assets / Total Assets) × 100',
         category: 'operational'
       },
-      {
-        name: 'Average Asset Cost',
+       
+        category: 'financial'
         description: 'Mean cost per asset',
         target: 'Within budget',
         formula: 'Sum(Asset Costs) / Total Assets',
@@ -169,7 +169,7 @@ export const freshserviceTemplates: DashboardTemplate[] = [
       {
         name: 'Software License Usage',
         description: 'Active vs available licenses',
-        category: 'operational'
+        category: 'compliance'
       },
       {
         name: 'Asset Depreciation',
@@ -204,9 +204,9 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         description: 'Mean time to approve changes',
         target: '< 48 hours',
         formula: 'Sum(Approval Time) / Total Changes',
-        category: 'performance'
+    description: 'Monitor known
       },
-      {
+    tem
         name: 'Change-Related Incidents',
         description: 'Incidents caused by changes',
         target: '< 2%',
@@ -215,7 +215,7 @@ export const freshserviceTemplates: DashboardTemplate[] = [
       }
     ],
     metrics: [
-      {
+       
         name: 'Total Changes',
         description: 'All change requests',
         category: 'operational'
@@ -234,23 +234,23 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         name: 'Failed Changes',
         description: 'Changes that failed implementation',
         category: 'quality'
-      }
-    ]
+       
+     
   },
-  {
+   
     title: 'Problem Management Dashboard',
     description: 'Monitor known problems, root cause analysis completion, problem resolution times, and recurring incidents to drive continuous improvement.',
     category: 'operations',
     priority: 'high',
     templateCategory: 'freshservice-it',
     kpis: [
-      {
+       
         name: 'Mean Time to Resolve Problems',
         description: 'Average time to resolve problems',
         target: '< 30 days',
         formula: 'Sum(Resolution Time) / Total Problems',
         category: 'performance'
-      },
+        
       {
         name: 'RCA Completion Rate',
         description: 'Percentage of problems with completed root cause analysis',
@@ -270,7 +270,7 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         description: 'Percentage of problems documented in KEDB',
         target: '100%',
         formula: '(KEDB Entries / Total Problems) × 100',
-        category: 'quality'
+        category: 'compliance'
       }
     ],
     metrics: [
@@ -306,11 +306,11 @@ export const freshserviceTemplates: DashboardTemplate[] = [
       {
         name: 'Overall SLA Compliance',
         description: 'Percentage of tickets meeting SLA',
-        target: '> 97%',
+        category: 'opera
         formula: '(SLA Met / Total Tickets) × 100',
-        category: 'performance'
+        description: 'Requests 
       },
-      {
+       
         name: 'Response Time SLA',
         description: 'Percentage meeting response SLA',
         target: '> 98%',
@@ -332,37 +332,37 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         category: 'performance'
       }
     ],
-    metrics: [
+        target
       {
         name: 'SLA Breaches',
         description: 'Total SLA violations',
         category: 'quality'
-      },
+    ],
       {
         name: 'At-Risk Tickets',
         description: 'Tickets approaching SLA deadline',
-        category: 'operational'
+        name: 'Agent Workload',
       },
       {
         name: 'Breach Reasons',
         description: 'Categorization of SLA breaches',
         category: 'quality'
-      },
-      {
+        
+    ]
         name: 'Average Time to Breach',
         description: 'Mean time by which SLAs are missed',
-        category: 'performance'
-      }
+
+
     ]
-  },
+
   {
     title: 'Service Catalog Performance Dashboard',
     description: 'Track service request volumes, fulfillment times, approval workflows, popular services, and request abandonment rates.',
-    category: 'operations',
+
     priority: 'medium',
     templateCategory: 'freshservice-it',
     kpis: [
-      {
+
         name: 'Average Fulfillment Time',
         description: 'Mean time to fulfill service requests',
         target: '< 48 hours',
@@ -374,15 +374,15 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         description: 'Percentage approved on first submission',
         target: '> 85%',
         formula: '(First-Time Approvals / Total Requests) × 100',
-        category: 'efficiency'
+
       },
-      {
+
         name: 'Request Completion Rate',
         description: 'Percentage of completed requests',
         target: '> 98%',
         formula: '(Completed Requests / Total Requests) × 100',
         category: 'quality'
-      },
+
       {
         name: 'Catalog Adoption Rate',
         description: 'Service catalog usage vs direct tickets',
@@ -390,87 +390,87 @@ export const freshserviceTemplates: DashboardTemplate[] = [
         formula: '(Catalog Requests / Total Requests) × 100',
         category: 'efficiency'
       }
-    ],
+
     metrics: [
-      {
+
         name: 'Total Service Requests',
         description: 'All catalog requests',
-        category: 'operational'
+
       },
-      {
+
         name: 'Popular Services',
         description: 'Most requested services',
         category: 'operational'
-      },
-      {
+
+
         name: 'Pending Approvals',
         description: 'Requests awaiting approval',
         category: 'operational'
-      },
+
       {
-        name: 'Request Abandonment Rate',
+
         description: 'Percentage of abandoned requests',
         category: 'quality'
       }
-    ]
+
   },
-  {
+
     title: 'IT Agent Performance Dashboard',
     description: 'Monitor agent productivity, workload distribution, resolution quality, customer satisfaction scores, and training needs.',
     category: 'operations',
-    priority: 'high',
+
     templateCategory: 'freshservice-it',
-    kpis: [
-      {
+
+
         name: 'Average Tickets per Agent',
         description: 'Mean ticket volume per agent',
         target: 'Balanced distribution',
         formula: 'Total Tickets / Total Agents',
         category: 'operational'
-      },
-      {
+
+
         name: 'Agent Response Time',
         description: 'Average time to first response',
         target: '< 2 hours',
         formula: 'Average(First Response Time)',
         category: 'performance'
       },
-      {
+
         name: 'Agent Resolution Rate',
         description: 'Percentage of tickets resolved by agents',
         target: '> 90%',
         formula: '(Resolved Tickets / Assigned Tickets) × 100',
         category: 'quality'
-      },
-      {
+
+
         name: 'Agent CSAT Score',
         description: 'Average customer satisfaction per agent',
         target: '> 4.5/5',
         formula: 'Average(Agent Ratings)',
         category: 'satisfaction'
-      }
-    ],
+
+
     metrics: [
-      {
+
         name: 'Active Agents',
         description: 'Currently active support agents',
         category: 'operational'
-      },
-      {
+
+
         name: 'Agent Workload',
         description: 'Open tickets per agent',
         category: 'operational'
-      },
-      {
+
+
         name: 'Agent Escalations',
         description: 'Tickets escalated by agents',
         category: 'quality'
-      },
-      {
+
+
         name: 'Agent Availability',
-        description: 'Online/available time percentage',
-        category: 'operational'
-      }
-    ]
-  }
-]
+
+
+
+
+
+
