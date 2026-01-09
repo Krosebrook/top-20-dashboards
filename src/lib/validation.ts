@@ -24,9 +24,6 @@ export function getAvailableSlots(currentCount: number): number {
 }
 
 export function validateDashboard(dashboard: unknown): dashboard is Dashboard {
-    Das
-    DashboardSchema.parse(dashboard)
-    return true
-  }
-
-  }
+  DashboardSchema.parse(dashboard)
+  return true
+}
