@@ -1,5 +1,5 @@
 import type { Dashboard, Category, Priority, MetricDefinition } from './types'
-import { FRESHSERVICE_TEMPLATES } from './freshservice-templates'
+import { freshserviceTemplates } from './freshservice-templates'
 
 export interface DashboardTemplate {
   title: string
@@ -87,7 +87,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategoryInfo[] = [
 ]
 
 export const DASHBOARD_TEMPLATES: DashboardTemplate[] = [
-  ...FRESHSERVICE_TEMPLATES,
+  ...freshserviceTemplates,
   {
     title: 'Revenue Performance Dashboard',
     description: 'Track MRR, ARR, revenue growth, and revenue by segment. Monitor financial performance and trends over time.',
