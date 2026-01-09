@@ -14,118 +14,118 @@ export const FRESHSERVICE_TEMPLATES: DashboardTemplate[] = [
         target: '< 15 minutes',
         formula: 'Sum(Time to First Response) / Total Tickets',
         category: 'performance'
-      },
-      {
-        name: 'Average Resolution Time',
-        description: 'Mean time to resolve tickets',
-        target: '< 4 hours',
-        formula: 'Sum(Resolution Time) / Total Resolved Tickets',
+        
+       
         category: 'performance'
-      },
       {
-        name: 'First Contact Resolution (FCR) Rate',
-        description: 'Percentage of tickets resolved on first contact',
-        target: '> 70%',
-        formula: '(Tickets Resolved on First Contact / Total Tickets) × 100',
-        category: 'quality'
+        description: 'Percen
+        formula: '(Tickets Resolved on First Contact / Total Tick
       },
-      {
-        name: 'Customer Satisfaction Score (CSAT)',
-        description: 'Average satisfaction rating from ticket surveys',
-        target: '> 4.5/5',
-        formula: 'Average(Survey Ratings)',
+        
+       
         category: 'satisfaction'
-      }
     ],
-    metrics: [
       {
-        name: 'Total Tickets Created',
         description: 'Number of new tickets opened in the period',
-        category: 'operational'
       },
+        
+       
       {
-        name: 'Tickets Resolved',
-        description: 'Number of tickets closed/resolved',
-        category: 'operational'
-      },
-      {
-        name: 'Backlog Size',
         description: 'Number of open/pending tickets',
-        target: '< 100',
-        category: 'operational'
-      },
+        category: 'operati
       {
-        name: 'Agent Utilization Rate',
-        description: 'Percentage of agent time spent on productive work',
-        target: '75-85%',
-        formula: '(Active Time / Total Available Time) × 100',
-        category: 'efficiency'
-      },
-      {
-        name: 'Ticket Reopening Rate',
-        description: 'Percentage of tickets reopened after resolution',
-        target: '< 5%',
-        formula: '(Reopened Tickets / Total Resolved) × 100',
+        description: 'Percentage
+       
+      
+        name: 
+       
         category: 'quality'
-      },
       {
-        name: 'SLA Compliance Rate',
-        description: 'Percentage of tickets meeting SLA targets',
-        target: '> 95%',
-        formula: '(Tickets Meeting SLA / Total Tickets) × 100',
-        category: 'quality'
+        description: 'Percentag
+        
       }
-    ]
   },
-  {
     title: 'Incident Management Dashboard',
-    description: 'Real-time monitoring of IT incidents, their severity, impact, and resolution progress. Track MTTR, incident trends, and major incident handling.',
     category: 'operations',
-    priority: 'critical',
-    templateCategory: 'business-essentials',
-    kpis: [
+    temp
       {
-        name: 'Mean Time to Detect (MTTD)',
-        description: 'Average time to identify an incident',
-        target: '< 5 minutes',
-        formula: 'Sum(Detection Time) / Total Incidents',
-        category: 'performance'
+        description: 'Average
+        formula: 'Sum(Detection Time) / Total Incident
       },
+        name: 'Mean Time to Res
+        
+       
       {
-        name: 'Mean Time to Resolve (MTTR)',
-        description: 'Average time to resolve incidents',
-        target: '< 2 hours',
-        formula: 'Sum(Resolution Time) / Total Incidents',
-        category: 'performance'
-      },
-      {
-        name: 'Critical Incident Response Time',
         description: 'Time to respond to P1/critical incidents',
-        target: '< 15 minutes',
-        formula: 'Average(Response Time for P1 Incidents)',
-        category: 'performance'
+        formula: 'Average
       },
-      {
-        name: 'Incident Recurrence Rate',
-        description: 'Percentage of incidents that recur',
-        target: '< 10%',
-        formula: '(Recurring Incidents / Total Incidents) × 100',
-        category: 'quality'
-      }
+        name: 'Incident Recurr
+        
+       
     ],
+      {
+        description: 'C
+      },
+        name: 'Incidents by
+        
+      {
+        description: 'Average time t
+        formula: 'Sum(Acknowledgment Time) / Total Incidents',
+      },
+        name: 'Escalation Rate',
+        target: '< 15%',
+       
+     
+    
+   
+      {
+        description: 'Number of incidents resolved within SLA',
+        category: 'quality'
+    ]
+  {
+    descrip
+    pri
+    kpis: [
+        name: 'Change Success Rate',
+        target: '> 95%',
+        category: 'quality'
+      {
+        
+       
+      },
+        name: 'Change-Related Incident Rate',
+        target: '< 5%',
+        category: 'quality'
+      {
+        
+       
+      }
     metrics: [
-      {
-        name: 'Total Active Incidents',
-        description: 'Current number of open incidents',
+        name: 'Total Changes Re
         category: 'operational'
-      },
       {
-        name: 'Incidents by Priority',
-        description: 'Breakdown of P1, P2, P3, P4 incidents',
+        
+      }
+        name: 'Changes Awaiting Approval'
         category: 'operational'
-      },
       {
-        name: 'Mean Time to Acknowledge (MTTA)',
+        description: 'Number of unsuccessful change implementatio
+        category: 'quality'
+      {
+      
+        catego
+      {
+        description: 'Changes made with
+        category: 'quality'
+    ]
+  {
+    des
+    priority: 'high',
+    kpis: [
+        name: 'Asset Utilizatio
+        
+       
+      {
         description: 'Average time to acknowledge an incident',
         target: '< 10 minutes',
         formula: 'Sum(Acknowledgment Time) / Total Incidents',
@@ -254,310 +254,310 @@ export const FRESHSERVICE_TEMPLATES: DashboardTemplate[] = [
       },
       {
         name: 'Cost per Asset',
-        description: 'Total cost of ownership per asset',
-        target: 'Trend downward',
-        formula: 'Total Asset Costs / Number of Assets',
-        category: 'financial'
-      }
-    ],
-    metrics: [
-      {
-        name: 'Total Assets Under Management',
-        description: 'Total number of IT assets tracked',
-        category: 'operational'
-      },
-      {
-        name: 'Assets by Category',
-        description: 'Hardware, Software, Network, Mobile devices breakdown',
-        category: 'operational'
-      },
-      {
-        name: 'Warranty Expiring Soon',
-        description: 'Assets with warranties expiring in next 90 days',
-        target: 'Monitor and renew',
-        category: 'operational'
-      },
-      {
-        name: 'Software License Utilization',
-        description: 'Percentage of purchased licenses in use',
-        target: '> 80%',
-        formula: '(Used Licenses / Total Licenses) × 100',
-        category: 'efficiency'
-      },
-      {
-        name: 'End-of-Life Assets',
-        description: 'Assets past manufacturer support date',
-        target: '< 5%',
-        category: 'operational'
-      },
-      {
-        name: 'Missing Assets',
-        description: 'Assets not found during audit',
-        target: '< 1%',
-        category: 'quality'
-      }
     ]
-  },
   {
-    title: 'Problem Management Dashboard',
-    description: 'Root cause analysis tracking, known error database management, and proactive problem identification to reduce recurring incidents.',
-    category: 'operations',
-    priority: 'high',
-    templateCategory: 'product-engineering',
-    kpis: [
-      {
-        name: 'Mean Time to Problem Resolution',
-        description: 'Average time to resolve identified problems',
-        target: '< 10 days',
-        formula: 'Sum(Problem Resolution Time) / Total Problems',
-        category: 'performance'
-      },
-      {
-        name: 'Incident to Problem Conversion Rate',
-        description: 'Percentage of incidents converted to problems',
-        target: '5-10%',
-        formula: '(Problems Created / Total Incidents) × 100',
-        category: 'operational'
-      },
-      {
-        name: 'Known Error Detection Rate',
-        description: 'Percentage of problems with identified root cause',
-        target: '> 80%',
-        formula: '(Known Errors / Total Problems) × 100',
-        category: 'quality'
-      },
-      {
-        name: 'Proactive Problem Identification',
-        description: 'Problems identified before incidents occur',
-        target: '> 30%',
-        formula: '(Proactive Problems / Total Problems) × 100',
-        category: 'quality'
-      }
-    ],
-    metrics: [
-      {
-        name: 'Open Problems',
-        description: 'Current number of active problems',
-        category: 'operational'
-      },
-      {
-        name: 'Known Errors Database Size',
-        description: 'Number of documented known errors with workarounds',
-        category: 'operational'
-      },
-      {
-        name: 'Problems by Category',
-        description: 'Hardware, Software, Network, Process problems',
-        category: 'operational'
-      },
-      {
-        name: 'Incidents Prevented',
-        description: 'Estimated incidents prevented by problem resolution',
-        category: 'quality'
-      },
-      {
-        name: 'Root Cause Analysis Completion Rate',
-        description: 'Percentage of problems with completed RCA',
-        target: '> 95%',
-        formula: '(RCAs Completed / Total Closed Problems) × 100',
-        category: 'quality'
-      },
-      {
-        name: 'Average Cost per Problem',
-        description: 'Total cost to resolve problems',
-        target: 'Trend downward',
-        category: 'financial'
-      }
-    ]
-  },
-  {
-    title: 'SLA Compliance & Performance Dashboard',
-    description: 'Monitor service level agreement adherence across all ticket types, track SLA breaches, and analyze performance against targets.',
-    category: 'operations',
+    description: 'Monitor service level agreement adhere
     priority: 'critical',
-    templateCategory: 'business-essentials',
-    kpis: [
+    kpi
+      
+        target
+       
       {
-        name: 'Overall SLA Compliance',
-        description: 'Percentage of all tickets meeting SLA',
-        target: '> 95%',
-        formula: '(Tickets Meeting SLA / Total Tickets) × 100',
-        category: 'quality'
-      },
-      {
-        name: 'P1 Incident SLA Compliance',
         description: 'Critical incident SLA adherence',
-        target: '> 98%',
-        formula: '(P1 Meeting SLA / Total P1) × 100',
-        category: 'quality'
+        formula: '(P1 Meeting S
       },
-      {
-        name: 'Response SLA Met',
-        description: 'Percentage meeting first response SLA',
+       
         target: '> 97%',
-        formula: '(Responses Within SLA / Total Tickets) × 100',
         category: 'performance'
-      },
       {
-        name: 'Resolution SLA Met',
-        description: 'Percentage meeting resolution time SLA',
-        target: '> 93%',
-        formula: '(Resolutions Within SLA / Total Resolved) × 100',
-        category: 'performance'
+        
+       
       }
-    ],
     metrics: [
-      {
-        name: 'SLA Breaches - Current Period',
-        description: 'Total number of SLA violations',
+        name: 'SLA Breaches - Curren
         target: '< 5%',
-        category: 'quality'
       },
-      {
-        name: 'Near-Breach Tickets',
-        description: 'Tickets approaching SLA deadline (< 20% time remaining)',
+       
         category: 'operational'
-      },
       {
-        name: 'SLA Performance by Priority',
-        description: 'Compliance rate for P1, P2, P3, P4 tickets',
-        category: 'quality'
+        description: 'Co
       },
+        name: 'SLA Performance
+        
       {
-        name: 'SLA Performance by Category',
-        description: 'Compliance by incident, request, problem, change',
-        category: 'quality'
-      },
-      {
-        name: 'Average Time to SLA Breach',
-        description: 'How far past SLA tickets are when breached',
-        target: 'Minimize',
+        description: 'How far past 
         category: 'performance'
-      },
       {
-        name: 'Business Hours vs. After Hours SLA',
-        description: 'SLA performance comparison by time period',
-        category: 'operational'
+        description: 'SLA perfo
       }
-    ]
   },
-  {
-    title: 'Service Request Fulfillment Dashboard',
-    description: 'Track service request catalog usage, fulfillment times, automation rates, and service request satisfaction metrics.',
+    title: 'Service Request Ful
     category: 'operations',
-    priority: 'high',
-    templateCategory: 'customer-success',
-    kpis: [
+    templateCategory: '
       {
-        name: 'Average Fulfillment Time',
-        description: 'Mean time to complete service requests',
-        target: '< 2 days',
-        formula: 'Sum(Fulfillment Time) / Total Requests',
-        category: 'performance'
-      },
-      {
-        name: 'Service Request Automation Rate',
-        description: 'Percentage of requests fulfilled automatically',
+       
+     
+    
+   
         target: '> 40%',
-        formula: '(Automated Fulfillments / Total Requests) × 100',
         category: 'efficiency'
-      },
       {
-        name: 'Service Catalog Adoption Rate',
-        description: 'Requests submitted via catalog vs. ad-hoc',
-        target: '> 80%',
-        formula: '(Catalog Requests / Total Requests) × 100',
-        category: 'efficiency'
+        description: 
+        formula: '(Catalog Requests / Total 
       },
-      {
-        name: 'Service Request CSAT',
-        description: 'Satisfaction score for service requests',
+       
         target: '> 4.7/5',
-        formula: 'Average(Service Request Ratings)',
         category: 'satisfaction'
-      }
     ],
-    metrics: [
       {
-        name: 'Total Service Requests',
-        description: 'Number of service requests submitted',
-        category: 'operational'
+        description: 'Number of
       },
-      {
-        name: 'Top Requested Services',
-        description: 'Most frequently requested catalog items',
+       
         category: 'operational'
-      },
       {
-        name: 'Pending Approvals',
-        description: 'Requests waiting for manager/budget approval',
-        category: 'operational'
+        description: 'Re
       },
+        name: 'Request Fulfillm
+        
       {
-        name: 'Request Fulfillment by Type',
-        description: 'Hardware, software, access, onboarding requests',
-        category: 'operational'
-      },
-      {
-        name: 'Self-Service Portal Usage',
-        description: 'Percentage of users using self-service',
-        target: '> 70%',
+        description: 'Percentage of users u
         formula: '(Self-Service Requests / Total Requests) × 100',
-        category: 'efficiency'
       },
-      {
         name: 'Request Abandonment Rate',
-        description: 'Requests cancelled before fulfillment',
         target: '< 5%',
-        formula: '(Cancelled Requests / Total Requests) × 100',
-        category: 'quality'
-      }
+        
     ]
-  },
   {
-    title: 'Agent Performance & Productivity Dashboard',
-    description: 'Individual and team agent metrics including ticket handling, response times, resolution quality, and workload distribution.',
-    category: 'hr',
+    description: 'Individual and team agent metrics including tick
     priority: 'high',
-    templateCategory: 'people-culture',
     kpis: [
+        name: 'Average Tick
+       
+      
       {
-        name: 'Average Tickets per Agent per Day',
-        description: 'Daily ticket handling capacity',
-        target: '15-25 tickets',
-        formula: 'Total Tickets / (Agents × Working Days)',
-        category: 'performance'
+       
+        formula: 'Average(Agen
       },
+        name: 'Agent Resolution
+        
+       
       {
-        name: 'Agent Response Time',
-        description: 'Average first response time by agent',
-        target: '< 20 minutes',
-        formula: 'Average(Agent First Response Times)',
-        category: 'performance'
-      },
-      {
-        name: 'Agent Resolution Rate',
-        description: 'Percentage of tickets resolved by agent',
-        target: '> 85%',
-        formula: '(Tickets Resolved / Tickets Assigned) × 100',
-        category: 'quality'
-      },
-      {
-        name: 'Agent CSAT Score',
         description: 'Customer satisfaction per agent',
-        target: '> 4.5/5',
-        formula: 'Average(Agent-Specific Ratings)',
-        category: 'satisfaction'
+        formula: 'Average(Agent
       }
-    ],
-    metrics: [
-      {
-        name: 'Tickets Assigned per Agent',
-        description: 'Current workload distribution',
+    met
+        name: 'Tickets Assigned per A
         category: 'operational'
-      },
       {
-        name: 'Agent Availability',
+        
+       
+      {
+        description: 'Performance by assigned skill/category',
+      },
+        
+       
+      {
+        description: 'Time spent on training and development',
+        category: 'opera
+      {
+        description: 'Perce
+        
+      }
+  },
+    title: 'IT Cost & Budget Management Dashboard',
+    category: 'finance',
+    templateCategory: 'financ
+      {
+     
+    
+   
+        name: 'IT Budget Variance',
+        target: '±5%',
+        category: 'financia
+      {
+        description: 'Savings achieved throu
+        for
+      }
+        name: 'ROI on IT Investments',
+        target: '> 200%',
+        category: 'finan
+    ],
+      {
+        
+      }
+        name: 'Cost by Category',
+        category: 'financial'
+      {
+        description: 'Total software licensing expens
+      },
+        
+       
+        category: 'financial'
+      {
+        description: 'Cl
+      },
+        name: 'Vendor Spend Ana
+        
+    ]
+  {
+    description: 'Track knowledge article usage, effectiveness
+    priority: 'medium',
+    kpis: [
+        name: 'Self-Service Res
+       
+      
+      {
+       
+        formula: '(Positive Ratings / Total Ra
+      },
+        name: 'Search S
+        target: '> 70%',
+        
+      {
+        description: 'Tickets preven
+        formula: '(KB Resolutions / (KB + Ticket Resolutions)) × 100',
+      }
+    metr
+       
+        category: 'operational'
+      {
+        description: 'Total
+      },
+       
+        category: 'operational'
+      {
+        description: 'Artic
+        
+      {
+        description: 'Common searches with 
+      },
+        name: 'Article Crea
+        target: '> 10',
+      }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         description: 'Online/available time percentage',
         target: '> 90%',
         category: 'operational'
