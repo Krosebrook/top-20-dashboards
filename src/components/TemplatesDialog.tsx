@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { MagnifyingGlass, Plus, Sparkle } from '@phosphor-icons/react'
+import { MagnifyingGlass, Plus, Sparkle, Target, ChartLineUp } from '@phosphor-icons/react'
 import {
   TEMPLATE_CATEGORIES,
   DASHBOARD_TEMPLATES,
@@ -35,7 +35,7 @@ export function TemplatesDialog({
   existingDashboards,
 }: TemplatesDialogProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<TemplateCategory>('business-essentials')
+  const [selectedCategory, setSelectedCategory] = useState<TemplateCategory>('freshservice-it')
 
   const availableSlots = 20 - existingDashboards.length
 
@@ -144,6 +144,18 @@ export function TemplatesDialog({
                             <Badge variant="outline" className={getCategoryColor(template.category)}>
                               {template.category}
                             </Badge>
+                            {template.kpis && template.kpis.length > 0 && (
+                              <Badge variant="secondary" className="text-xs gap-1">
+                                <Target className="h-3 w-3" weight="bold" />
+                                {template.kpis.length} KPIs
+                              </Badge>
+                            )}
+                            {template.metrics && template.metrics.length > 0 && (
+                              <Badge variant="secondary" className="text-xs gap-1">
+                                <ChartLineUp className="h-3 w-3" weight="bold" />
+                                {template.metrics.length} Metrics
+                              </Badge>
+                            )}
                           </div>
                         </div>
                         <Button
@@ -167,7 +179,7 @@ export function TemplatesDialog({
             </div>
           ) : (
             <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as TemplateCategory)} className="flex flex-col h-full">
-              <TabsList className="w-full grid grid-cols-4 h-auto shrink-0">
+              <TabsList className="w-full grid grid-cols-3 lg:grid-cols-5 h-auto shrink-0">
                 {TEMPLATE_CATEGORIES.map((cat) => (
                   <TabsTrigger
                     key={cat.id}
@@ -208,6 +220,18 @@ export function TemplatesDialog({
                               <Badge variant="outline" className={getCategoryColor(template.category)}>
                                 {template.category}
                               </Badge>
+                              {template.kpis && template.kpis.length > 0 && (
+                                <Badge variant="secondary" className="text-xs gap-1">
+                                  <Target className="h-3 w-3" weight="bold" />
+                                  {template.kpis.length} KPIs
+                                </Badge>
+                              )}
+                              {template.metrics && template.metrics.length > 0 && (
+                                <Badge variant="secondary" className="text-xs gap-1">
+                                  <ChartLineUp className="h-3 w-3" weight="bold" />
+                                  {template.metrics.length} Metrics
+                                </Badge>
+                              )}
                             </div>
                           </div>
                           <Button

@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { PencilSimple, Trash, Tag, Eye } from '@phosphor-icons/react'
+import { PencilSimple, Trash, Tag, Eye, Target, ChartLineUp } from '@phosphor-icons/react'
 import type { Dashboard } from '@/lib/types'
 import { PRIORITY_CONFIG, STATUS_CONFIG, CATEGORY_CONFIG } from '@/lib/constants'
 import { motion } from 'framer-motion'
@@ -79,6 +79,18 @@ export function DashboardCard({ dashboard, onEdit, onDelete, onView }: Dashboard
           <Badge variant="outline" className={STATUS_CONFIG[dashboard.status].className}>
             {STATUS_CONFIG[dashboard.status].label}
           </Badge>
+          {dashboard.kpis && dashboard.kpis.length > 0 && (
+            <Badge variant="secondary" className="text-xs gap-1">
+              <Target className="h-3 w-3" weight="bold" />
+              {dashboard.kpis.length} KPIs
+            </Badge>
+          )}
+          {dashboard.metrics && dashboard.metrics.length > 0 && (
+            <Badge variant="secondary" className="text-xs gap-1">
+              <ChartLineUp className="h-3 w-3" weight="bold" />
+              {dashboard.metrics.length} Metrics
+            </Badge>
+          )}
         </div>
 
         {dashboard?.tags && Array.isArray(dashboard.tags) && dashboard.tags.length > 0 && (

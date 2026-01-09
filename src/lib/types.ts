@@ -2,6 +2,14 @@ export type Priority = 'critical' | 'high' | 'medium' | 'low'
 export type Status = 'not-started' | 'in-progress' | 'completed' | 'on-hold'
 export type Category = 'analytics' | 'sales' | 'marketing' | 'operations' | 'finance' | 'hr' | 'product' | 'customer' | 'other'
 
+export interface MetricDefinition {
+  name: string
+  description: string
+  target?: string
+  formula?: string
+  category?: 'performance' | 'quality' | 'efficiency' | 'satisfaction' | 'financial' | 'operational'
+}
+
 export interface Dashboard {
   id: string
   title: string
@@ -11,6 +19,8 @@ export interface Dashboard {
   status: Status
   tags: string[]
   createdAt: number
+  metrics?: MetricDefinition[]
+  kpis?: MetricDefinition[]
 }
 
 export type AnalyticsEventType = 

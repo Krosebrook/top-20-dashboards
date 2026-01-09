@@ -12,12 +12,14 @@ export function useDashboardManager() {
 
   useEffect(() => {
     if (dashboards && dashboards.length > 0) {
-      const needsMigration = dashboards.some(d => !d.tags)
+      const needsMigration = dashboards.some(d => !d.tags || d.metrics === undefined || d.kpis === undefined)
       if (needsMigration) {
         setDashboards((current) =>
           (current || []).map(d => ({
             ...d,
-            tags: d.tags || []
+            tags: d.tags || [],
+            metrics: d.metrics,
+            kpis: d.kpis,
           }))
         )
       }
@@ -76,6 +78,8 @@ export function useDashboardManager() {
       priority: template.priority,
       status: 'not-started',
       tags: [],
+      metrics: template.metrics,
+      kpis: template.kpis,
     })
     return result !== null
   }, [addDashboard])

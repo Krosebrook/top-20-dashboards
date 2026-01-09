@@ -14,7 +14,9 @@ import {
   ChartBar,
   ListChecks,
   Notepad,
-  ClockCounterClockwise
+  ClockCounterClockwise,
+  Target,
+  ChartLineUp
 } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { format } from 'date-fns'
@@ -37,6 +39,10 @@ export function DashboardViewer({ open, onOpenChange, dashboard, onEdit }: Dashb
     onEdit(dashboard)
     onOpenChange(false)
   }
+
+  const hasKPIs = dashboard.kpis && dashboard.kpis.length > 0
+  const hasMetrics = dashboard.metrics && dashboard.metrics.length > 0
+  const tabCount = hasKPIs || hasMetrics ? 6 : 4
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -90,11 +96,23 @@ export function DashboardViewer({ open, onOpenChange, dashboard, onEdit }: Dashb
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
           <div className="px-6 pt-4 flex-shrink-0">
-            <TabsList className="w-full grid grid-cols-4 h-auto">
+            <TabsList className={`w-full grid grid-cols-${tabCount} h-auto`}>
               <TabsTrigger value="overview" className="gap-2 py-2.5">
                 <ChartBar className="h-4 w-4" />
                 Overview
               </TabsTrigger>
+              {hasKPIs && (
+                <TabsTrigger value="kpis" className="gap-2 py-2.5">
+                  <Target className="h-4 w-4" />
+                  KPIs
+                </TabsTrigger>
+              )}
+              {hasMetrics && (
+                <TabsTrigger value="metrics" className="gap-2 py-2.5">
+                  <ChartLineUp className="h-4 w-4" />
+                  Metrics
+                </TabsTrigger>
+              )}
               <TabsTrigger value="details" className="gap-2 py-2.5">
                 <Notepad className="h-4 w-4" />
                 Details
@@ -179,6 +197,132 @@ export function DashboardViewer({ open, onOpenChange, dashboard, onEdit }: Dashb
                   )}
                 </motion.div>
               </TabsContent>
+
+              {hasKPIs && (
+                <TabsContent value="kpis" className="mt-0">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-4"
+                  >
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                        <Target className="h-5 w-5 text-primary" weight="bold" />
+                        Key Performance Indicators
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Critical metrics that measure success and performance against targets
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                      {dashboard.kpis!.map((kpi, index) => (
+                        <Card key={index} className="p-5 hover:shadow-md transition-shadow">
+                          <div className="space-y-3">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-base mb-1">{kpi.name}</h4>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {kpi.description}
+                                </p>
+                              </div>
+                              {kpi.category && (
+                                <Badge variant="secondary" className="shrink-0">
+                                  {kpi.category}
+                                </Badge>
+                              )}
+                            </div>
+                            {(kpi.target || kpi.formula) && (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t">
+                                {kpi.target && (
+                                  <div className="space-y-1">
+                                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                                      Target
+                                    </p>
+                                    <p className="text-sm font-semibold text-primary">
+                                      {kpi.target}
+                                    </p>
+                                  </div>
+                                )}
+                                {kpi.formula && (
+                                  <div className="space-y-1">
+                                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                                      Formula
+                                    </p>
+                                    <p className="text-xs font-mono bg-muted px-2 py-1 rounded">
+                                      {kpi.formula}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </motion.div>
+                </TabsContent>
+              )}
+
+              {hasMetrics && (
+                <TabsContent value="metrics" className="mt-0">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-4"
+                  >
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                        <ChartLineUp className="h-5 w-5 text-primary" weight="bold" />
+                        Supporting Metrics
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Additional measurements that provide insight into performance and operations
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {dashboard.metrics!.map((metric, index) => (
+                        <Card key={index} className="p-4 hover:shadow-md transition-shadow">
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <h4 className="font-semibold text-sm">{metric.name}</h4>
+                              {metric.category && (
+                                <Badge variant="outline" className="text-xs shrink-0">
+                                  {metric.category}
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                              {metric.description}
+                            </p>
+                            {(metric.target || metric.formula) && (
+                              <div className="space-y-2 pt-2 border-t">
+                                {metric.target && (
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-xs text-muted-foreground">Target:</span>
+                                    <span className="text-xs font-semibold text-primary">
+                                      {metric.target}
+                                    </span>
+                                  </div>
+                                )}
+                                {metric.formula && (
+                                  <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">Formula:</p>
+                                    <p className="text-xs font-mono bg-muted px-2 py-1 rounded break-all">
+                                      {metric.formula}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </motion.div>
+                </TabsContent>
+              )}
 
               <TabsContent value="details" className="mt-0">
                 <motion.div

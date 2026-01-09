@@ -1,4 +1,5 @@
-import type { Dashboard, Category, Priority } from './types'
+import type { Dashboard, Category, Priority, MetricDefinition } from './types'
+import { FRESHSERVICE_TEMPLATES } from './freshservice-templates'
 
 export interface DashboardTemplate {
   title: string
@@ -6,9 +7,12 @@ export interface DashboardTemplate {
   category: Category
   priority: Priority
   templateCategory: TemplateCategory
+  metrics?: MetricDefinition[]
+  kpis?: MetricDefinition[]
 }
 
 export type TemplateCategory = 
+  | 'freshservice-it'
   | 'business-essentials'
   | 'sales-marketing'
   | 'product-engineering'
@@ -26,6 +30,12 @@ export interface TemplateCategoryInfo {
 }
 
 export const TEMPLATE_CATEGORIES: TemplateCategoryInfo[] = [
+  {
+    id: 'freshservice-it',
+    name: 'Freshservice IT Dashboards',
+    description: 'Professional-grade IT service management dashboards',
+    icon: '🛠️'
+  },
   {
     id: 'business-essentials',
     name: 'Business Essentials',
@@ -77,6 +87,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategoryInfo[] = [
 ]
 
 export const DASHBOARD_TEMPLATES: DashboardTemplate[] = [
+  ...FRESHSERVICE_TEMPLATES,
   {
     title: 'Revenue Performance Dashboard',
     description: 'Track MRR, ARR, revenue growth, and revenue by segment. Monitor financial performance and trends over time.',
